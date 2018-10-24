@@ -7,17 +7,26 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-                                                                                                                                //linhas e colunas de treinamento mais tarde transformar em variavel global
-float* euclidiana(float** featureTarget, int linhasTreinamento, int colunasTreinamento, float** featureTraining){                //deste cara, pegue estes mais proximos e use isso como base
-        float acc = 0;
-        float* resultado = (float*) malloc();                                                                                   //alocar espaço para matriz linha da resposta
 
-        for(int i = 0; i < linhasTreinamento; i++, acc = 0){
-                for(int j = 0; j < colunasTreinamento; j++)
-                        acc += (featureTarget[i][j] - featureTraining[i][j]) * (featureTarget[i][j] - featureTraining[i][j]);
-                
-                resultado[i] = sqrt(acc);
-        }
+//linhas e colunas de treinamento mais tarde transformar em variavel global
+//deste cara (featureTarget), use isso como base (featureTraining), 
+//a resposta será a distância entre o target e o treinamento OS OUTROS SAO INFORMAÇÕES NECESSARIAS, REMOVER FUTURAMENTE
+float euclidiana(float featureTarget, float featureTraining){
+    float resultado = sqrt((featureTarget - featureTraining) * (featureTarget - featureTraining));
+    return resultado;
+}
 
-        return resultado;
+//implementa a distância euclidiana já como vetor
+float* euclidianaVetor(float* featureTarget, float* featureTraining){
+    float* resultado = (float*) malloc(sizeof(featureTarget);
+
+    if(sizeof(featureTarget )!= sizeof(featureTraining)){
+        printf("\n\n\tFUDEU GERAL, O ARGUMENTO TEM NUMERO DE FEATURES DIFERENTE DO TREINAMENT0\n");
+        return NULL;
+    }
+
+    for(int i = 0; i < sizeof(featureTarget), i++)
+        resultado[i] = euclidiana(featureTarget[i], featureTraining[i]);
+    
+    return resultado;
 }
