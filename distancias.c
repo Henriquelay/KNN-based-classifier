@@ -15,7 +15,7 @@ float euclides(float featureTarget, float featureTraining){
 }
 
 //implementa a distância euclidiana sobre um vetor
-float euclidesVetor(float* vetorTarget, float* vetorTraining){
+float euclidesVetor(float *vetorTarget, float *vetorTraining){
     int i;
     float acc = 0;
 
@@ -33,8 +33,8 @@ float euclidesVetor(float* vetorTarget, float* vetorTraining){
 }
 
 //implementa um vetor de euclidesVetor
-float* euclidesMatrix(float** matrizTarget, float** matrizTraining){
-    float* resultado = (float*) malloc(sizeof(matrizTarget));
+float* euclidesMatrix(float **matrizTarget, float **matrizTraining){
+    float *resultado = (float*) malloc(sizeof(matrizTarget));
 
     /*analizar se esse IF é de fato necessário 
     (se entradas de linhas diferentes devem ser processadas, e se sim, de que forma)*/
@@ -57,7 +57,7 @@ float minkowski(float featureTarget, float featureTraining, float r){
 }
 
 //implementa Minkowski sobre um vetor
-float minkowskiVetor(float* vetorTarget, float* vetorTraining, float r){
+float minkowskiVetor(float *vetorTarget, float *vetorTraining, float r){
     int i;
     float acc = 0;
 
@@ -75,7 +75,7 @@ float minkowskiVetor(float* vetorTarget, float* vetorTraining, float r){
 }
 
 //implementa um vetor de minkowskiVetor
-float* minkowskiMatrix(float** matrizTarget, float** matrizTraining, float r){
+float* minkowskiMatrix(float **matrizTarget, float **matrizTraining, float r){
     float* resultado = (float*) malloc(sizeof(matrizTarget));
 
     /*analizar se esse IF é de fato necessário 
@@ -91,7 +91,7 @@ float* minkowskiMatrix(float** matrizTarget, float** matrizTraining, float r){
 
 
 //Dependencia para a similaridadeCosseno
-float produtoInterno(float* vetorA, float* vetorB){
+float produtoInterno(float *vetorA, float *vetorB){
     int i;
     float resultado = 0;
     
@@ -107,7 +107,60 @@ float produtoInterno(float* vetorA, float* vetorB){
 }
 
 //Início do bloco similaridade de cosseno
-float similaridadeCosseno(float* vetorTarget, float* vetorTraining){
+float similaridadeCosseno(float *vetorTarget, float *vetorTraining){
     float resultado = produtoInterno(vetorTarget, vetorTraining) / euclidesVetor(vetorTarget, vetorTraining);
     return resultado;
+}
+
+
+//main para teste
+void main(){
+    char c;
+    float *target, *training, r;
+    int indexTarget, indexTraining;
+
+    while(1){
+    printf("Tamanho do vetor target: ");
+    scanf(" %i", &indexTarget);
+    printf("Tamanho do vetor training: ");
+    scanf(" %i", &indexTraining);
+
+    target = (float*) malloc(indexTarget * sizeof(float));
+    training = (float*) malloc(indexTraining * sizeof(float));
+
+    for(int i = 0; i < indexTarget; i++){
+            printf("\nTarget[%i]: ", i);
+            scanf(" %f", &target[i]);
+    }
+    for(int i = 0; i < indexTraining; i++){
+            printf("\nTraining[%i]: ", i);
+            scanf(" %f", &training[i]);
+    }
+
+    printf("\nM = Minkowski\tE = Euclides\tC = Similaridade de Cossenos\tQ = Quit\n>");
+    scanf(" %c", &c);
+
+    switch(c){
+        case 'M':
+        case 'm':
+            printf("R: ");
+            scanf(" %f", &r);
+            minkowskiVetor(target, training, r);
+        break;
+        case 'E':
+        case 'e':
+            euclidesVetor(target, training);
+        break;
+        case 'C':
+        case 'c':
+            similaridadeCosseno(target, training);
+        break;
+        case 'Q':
+        case 'q':
+            exit(0);
+        }
+
+        free(target);
+        free(training);
+    }
 }
