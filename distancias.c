@@ -96,7 +96,7 @@ float produtoInterno(float *vetorA, float *vetorB){
     float resultado = 0;
     
     if(sizeof(vetorA) != sizeof(vetorB)){
-        printf("\n\n\tFUDEU GERAL, ESSES VETORES NÃO TEM PRODUTO INTERNO (TAMANHOS DIFERENTES!!): %i : %i\n", vetorA, vetorB);
+        printf("\n\n\tFUDEU GERAL, ESSES VETORES NÃO TEM PRODUTO INTERNO (TAMANHOS DIFERENTES!!)");
         exit(1);
     }
 
