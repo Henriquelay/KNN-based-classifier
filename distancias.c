@@ -145,15 +145,15 @@ void main(){
         case 'm':
             printf("R: ");
             scanf(" %f", &r);
-            minkowskiVetor(target, training, r);
+            printf("%f\n_______\n",minkowskiVetor(target, training, r));
         break;
         case 'E':
         case 'e':
-            euclidesVetor(target, training);
+            printf("%f\n_______\n",euclidesVetor(target, training));
         break;
         case 'C':
         case 'c':
-            similaridadeCosseno(target, training);
+            printf("%f\n_______\n",similaridadeCosseno(target, training));
         break;
         case 'Q':
         case 'q':
