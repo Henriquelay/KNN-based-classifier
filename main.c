@@ -5,7 +5,8 @@
 //main para teste
 void main(){
     char c;
-    float *target, *training, r;
+    float r;
+    float *target, *training, *resultado;
     int indexTarget, indexTraining;
 
     while(1){
@@ -34,22 +35,25 @@ void main(){
         case 'm':
             printf("R: ");
             scanf(" %f", &r);
-            printf("%f\n_______\n",minkowskiVetor(target, training, r));
+            printf("%f\n_______\n",minkowskiVetor(target, indexTarget, training, indexTraining, r));
         break;
         case 'E':
         case 'e':
-            printf("%f\n_______\n",euclidesVetor(target, training));
+            printf("%f\n_______\n",euclidesVetor(target, indexTarget, training, indexTraining));
         break;
         case 'C':
         case 'c':
-            printf("%f\n_______\n",similaridadeCosseno(target, training));
+            printf("%f\n_______\n",similaridadeCosseno(target, indexTarget, training, indexTraining));
         break;
         case 'Q':
         case 'q':
-            exit(0);
+            return;
         }
+        
+        if(resultado == NULL || resultado[0] == -1) return;
 
         free(target);
         free(training);
+        if(resultado != NULL) free(resultado);
     }
 }

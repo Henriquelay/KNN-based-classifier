@@ -4,15 +4,15 @@
 /*Aqui vai as funcoes*/
 
 float euclides(float, float);
-float euclidesVetor(float*, float*);
-float* euclidesMatrix(float**, float**);
+float euclidesVetor(float*, int, float*, int);
+float* euclidesMatrix(float**, int, int, float**, int, int);
 
 float minkowski(float, float, float);
-float minkowskiVetor(float*, float*, float);
-float* minkowskiMatrix(float**, float**, float);
+float minkowskiVetor(float*, int, float*, int, float);
+float* minkowskiMatrix(float**, int, float**, int, float);
 
-float produtoInterno(float*, float*);
-float similaridadeCosseno(float*, float*);
+float produtoInterno(float*, int, float*, int);
+float similaridadeCosseno(float*, int, float*, int);
 
 
 /*Endif para evitar warnings*/
