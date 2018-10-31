@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <math.h>
 
+// passar checagem de entradas pra main
+
 //Início do bloco Euclides
 float euclides(float featureTarget, float featureTraining){
     float resultado = (featureTarget - featureTraining) * (featureTarget - featureTraining);
@@ -91,8 +93,21 @@ float* minkowskiMatrix(float** matrizTarget, int tamTargetRow,int tamTargetCol, 
 return resultado;
 }
 
+// distrnacia de Chebysshev aplicada em um vetor
+float chebyshevVetor(float* vetorTarget, int tamTarget, float* vetorTraining, int tamTraining){
+    float max = -1, atual;
 
-//Dependencia para a similaridadeCosseno
+    for(int i = 0; i < tamTarget; i++){
+        atual = abs(vetorTarget[i] - vetorTraining[i]);
+        if(atual > max) max = atual;
+    }
+    
+    return max;
+}
+
+
+
+/* //Dependencia para a similaridadeCosseno
 float produtoInterno(float* vetorA, int tamVetorA, float* vetorB, int tamVetorB){
     int i;
     float resultado = 0;
@@ -112,4 +127,4 @@ float produtoInterno(float* vetorA, int tamVetorA, float* vetorB, int tamVetorB)
 float similaridadeCosseno(float* vetorTarget, int tamVetorTarget, float* vetorTraining, int TamVetorTraining){
     float resultado = produtoInterno(vetorTarget, tamVetorTarget, vetorTraining, TamVetorTraining) / euclidesVetor(vetorTarget, tamVetorTarget, vetorTraining, TamVetorTraining);
     return resultado;
-}
+} */

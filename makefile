@@ -6,7 +6,7 @@ CFLAGS=-Wall
 
 all: programa
 	$ rm *.o
-# $ mv programa main
+	$ mv programa main
 # $ ./main
 
 programa: main.o distancias.o
@@ -20,4 +20,4 @@ distancias.o: distancias.c
 
 clean:
 	$ rm *.o
-	$ rm programa
+	# $ rm programa

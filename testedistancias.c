@@ -9,9 +9,9 @@ void main(){
     float *target, *training, *resultado;
     int indexTarget, indexTraining;
 
-    while(1){
     printf("Tamanho do vetor target: ");
     scanf(" %i", &indexTarget);
+
     printf("Tamanho do vetor training: ");
     scanf(" %i", &indexTraining);
 
@@ -27,7 +27,8 @@ void main(){
             scanf(" %f", &training[i]);
     }
 
-    printf("\nM = Minkowski\tE = Euclides\tC = Similaridade de Cossenos\tQ = Quit\n>");
+    while(1){
+    printf("\nM = Minkowski\tE = Euclides\tC = Chebyshev\tQ = Quit\n>");
     scanf(" %c", &c);
 
     switch(c){
@@ -43,17 +44,13 @@ void main(){
         break;
         case 'C':
         case 'c':
-            printf("%f\n_______\n",similaridadeCosseno(target, indexTarget, training, indexTraining));
+            printf("%f\n_______\n",chebyshevVetor(target, indexTarget, training, indexTraining));
         break;
         case 'Q':
         case 'q':
+            free(target);
+            free(training);
             return;
         }
-        
-        if(resultado == NULL || resultado[0] == -1) return;
-
-        free(target);
-        free(training);
-        if(resultado != NULL) free(resultado);
     }
 }
