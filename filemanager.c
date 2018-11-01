@@ -18,7 +18,6 @@ void textSize(FILE *arquivo, int *colunas, int *linhas){
         }
         texto = realloc(texto, (i+2)*sizeof(char));
     }
-    
     free(texto);
 
     *colunas = c;
@@ -36,8 +35,8 @@ void main(){
         exit(1);
     }
 
-    textSize(arq, &colunas, &linhas);
-
+    textSize(arq, &colunas, &linhas); //MEDE O TAMANHO DO ARQUIVO (FEATURESxAMOSTRAS)
+    rewind(arq);
     printf("Colunas: %d\nLinhas: %d\n", colunas, linhas);
 
     amostras = (float **)malloc(linhas * sizeof(float *));
