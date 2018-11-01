@@ -1,35 +1,57 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void textSize(FILE *arquivo, int *colunas, int *linhas){
+    char *texto;
+    texto = (char *)malloc(sizeof(char));
+    int c = 0, l = 0;
+
+    for(int i = 0; !feof(arquivo); i++){
+        fscanf(arquivo, "%c", &texto[i]);
+        if(l==0){
+            if(texto[i] == ','){
+                c++;
+            }
+        }
+        if(texto[i] == '\n'){
+            l++;
+        }
+        texto = realloc(texto, (i+2)*sizeof(char));
+    }
+    
+    free(texto);
+
+    *colunas = c;
+    *linhas = l;
+}
+
 void main(){
-    FILE *arq = fopen("iris/dataset/iris_treino.csv", "r");
-    float *teste;
-    int *c;
+    FILE *arq = fopen("iris/dataset/iris_teste.csv", "r");
+    float *feature, **amostra;
+    int *rotulo;
+    int c, l;
 
     if (arq==NULL){
         printf("DEU MERDA");
         exit(1);
     }
 
-    //Colocando todos os valores em um único ponteiro
-    teste = (float *)malloc(sizeof(float));
-    c = (int *)malloc(sizeof(int));
+    textSize(arq, &c, &l);
 
-    for(c[0] = 0; !feof(arq); c[0]++){
-        fscanf(arq, "%f,", &teste[c[0]]);
-        // printf("%d\n", i);
-        teste = realloc(teste, (c[0]+2)*sizeof(float));
+    printf("Colunas: %d\nLinhas: %d\n", c, l);
+
+    feature = (float *)malloc(c * sizeof(float));
+    amostra = (float **)malloc(l * sizeof(float *));
+    rotulo = (int *)malloc(l * sizeof(int));
+
+    for(int i = 0; i<l; i++){
+        for(int j = 0; j<l; j++){
+
+        }
     }
-    c[0] = c[0] - 1;
-    printf("%d", c[0]);
-    
-    for(int i = 0; i<c[0]; i++){
-        printf("%.2f ", teste[i]);
-    }
-    free(teste);
 
     fclose(arq);
 
-    //Fazer uma função que coloque os valores de cada linha (ponteiro) em outro ponteiro (matriz
+
 
 }
