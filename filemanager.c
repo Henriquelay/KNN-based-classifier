@@ -27,31 +27,50 @@ void textSize(FILE *arquivo, int *colunas, int *linhas){
 
 void main(){
     FILE *arq = fopen("iris/dataset/iris_teste.csv", "r");
-    float *feature, **amostra;
-    int *rotulo;
-    int c, l;
+    float **amostras;
+    float *rotulo;
+    int colunas, linhas;
 
     if (arq==NULL){
         printf("DEU MERDA");
         exit(1);
     }
 
-    textSize(arq, &c, &l);
+    textSize(arq, &colunas, &linhas);
 
-    printf("Colunas: %d\nLinhas: %d\n", c, l);
+    printf("Colunas: %d\nLinhas: %d\n", colunas, linhas);
 
-    feature = (float *)malloc(c * sizeof(float));
-    amostra = (float **)malloc(l * sizeof(float *));
-    rotulo = (int *)malloc(l * sizeof(int));
+    amostras = (float **)malloc(linhas * sizeof(float *));
 
-    for(int i = 0; i<l; i++){
-        for(int j = 0; j<l; j++){
-
-        }
+    for(int i = 0; i<linhas; i++){
+        amostras[i] = (float *)malloc(colunas * sizeof(float));
     }
 
+    rotulo = (float *)malloc(linhas * sizeof(float));
+
+    //NÃO LÊ OS VALORES DIREITO
+    for(int i = 0; !feof(arq); i++){
+        for(int j = 0; j < colunas; j++){ 
+            fscanf(arq, "%f,", &amostras[i][j]);
+            if(j==(colunas-1)){
+                fscanf(arq, "%f", &rotulo[i]);
+            }
+        }
+    }
+            
+            
+    //PRINTA A MATRIZ CORRETAMENTE
+    for(int i = 0;  i < linhas; i++){
+        for(int j = 0; j < colunas; j++){
+            printf("%.2f", amostras[i][j]); 
+            printf(" ");
+        }
+        printf("%.0f", rotulo[i]);
+        puts(" ");
+    }
+
+    free(amostras);
+    free(rotulo);
     fclose(arq);
-
-
-
+    printf("\n\n");
 }
