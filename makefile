@@ -4,13 +4,11 @@ CC=gcc
 # liga algumas flags de warn, mas não todas
 CFLAGS=-Wall
 
-all: programa
+all: main
 	$ rm *.o
-	$ mv programa main
-# $ ./main
 
-programa: main.o distancias.o
-	$ gcc -o programa main.o distancias.o -lm
+main: main.o distancias.o
+	$ gcc -o main main.o distancias.o -lm
 
 main.o: main.c
 	$ gcc -c main.c
@@ -20,4 +18,9 @@ distancias.o: distancias.c
 
 clean:
 	$ rm *.o
-	# $ rm programa
+
+run: main
+	$./main
+
+val: main
+	$(valgrind ./main)
