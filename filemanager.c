@@ -25,9 +25,6 @@ void textSize(FILE *arquivo, int *colunas, int *linhas){
     *linhas = l;
 }
 
-
-
-
 void printaMatriz(float **matriz, float *iD, int Ncolunas, int Nlinhas){
     for(int i = 0;  i < Nlinhas; i++){
         for(int j = 0; j < Ncolunas; j++){
