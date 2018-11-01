@@ -19,13 +19,38 @@ void textSize(FILE *arquivo, int *colunas, int *linhas){
         texto = realloc(texto, (i+2)*sizeof(char));
     }
     free(texto);
+    rewind(arquivo);
 
     *colunas = c;
     *linhas = l;
 }
 
+
+
+
+void printaMatriz(float **matriz, float *iD, int Ncolunas, int Nlinhas){
+    for(int i = 0;  i < Nlinhas; i++){
+        for(int j = 0; j < Ncolunas; j++){
+            printf("%.2f ", matriz[i][j]); 
+        }
+        printf("%.0f\n", iD[i]);
+    }
+}
+
+void transcribe(FILE *arquivo, float **matrizAmostra, float *rotuloVet, int colunas, int linhas){
+    for(int i = 0; !feof(arquivo); i++){
+        for(int j = 0; j < colunas; j++){ 
+            fscanf(arquivo, "%f,", &matrizAmostra[i][j]);
+            if(j==(colunas-1)){
+                fscanf(arquivo, "%f", &rotuloVet[i]);
+            }
+        }
+    }
+    rewind(arquivo);
+}
+
 void main(){
-    FILE *arq = fopen("iris/dataset/iris_teste.csv", "r");
+    FILE *arq = fopen("vowels/dataset/vowels_teste.csv", "r");
     float **amostras;
     float *rotulo;
     int colunas, linhas;
@@ -36,7 +61,7 @@ void main(){
     }
 
     textSize(arq, &colunas, &linhas); //MEDE O TAMANHO DO ARQUIVO (FEATURESxAMOSTRAS)
-    rewind(arq);
+    
     printf("Colunas: %d\nLinhas: %d\n", colunas, linhas);
 
     amostras = (float **)malloc(linhas * sizeof(float *));
@@ -47,26 +72,9 @@ void main(){
 
     rotulo = (float *)malloc(linhas * sizeof(float));
 
-    //NÃO LÊ OS VALORES DIREITO
-    for(int i = 0; !feof(arq); i++){
-        for(int j = 0; j < colunas; j++){ 
-            fscanf(arq, "%f,", &amostras[i][j]);
-            if(j==(colunas-1)){
-                fscanf(arq, "%f", &rotulo[i]);
-            }
-        }
-    }
-            
-            
-    //PRINTA A MATRIZ CORRETAMENTE
-    for(int i = 0;  i < linhas; i++){
-        for(int j = 0; j < colunas; j++){
-            printf("%.2f", amostras[i][j]); 
-            printf(" ");
-        }
-        printf("%.0f", rotulo[i]);
-        puts(" ");
-    }
+    transcribe(arq, amostras, rotulo, colunas, linhas);
+    printaMatriz(amostras, rotulo, colunas, linhas);
+
 
     free(amostras);
     free(rotulo);
