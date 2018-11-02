@@ -1,4 +1,4 @@
-dataset/vowels_teste.csv
+dataset/vowels_treino.csv
 dataset/vowels_teste.csv
 predicoes/
 11, C

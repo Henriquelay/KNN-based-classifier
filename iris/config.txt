@@ -1,4 +1,4 @@
-dataset/iris_teste.csv
+dataset/iris_treino.csv
 dataset/iris_teste.csv
 predicoes/
 3, C
