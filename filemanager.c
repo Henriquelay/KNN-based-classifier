@@ -47,56 +47,86 @@ void transcribe(FILE *arquivo, float **matrizAmostra, float *rotuloVet, int colu
     rewind(arquivo);
 }
 
-
-
-void openConfig(FILE *configuracao, char *pathTreino, char *pathTeste, char* pathPredicao, int *k, char *distancia, float *coefMinkowski, int *linhas){
-
-    k = (int*) malloc(nLinhas * sizeof(int));
-    distancia = (char*) malloc(nLinhas * sizeof(char));
-    coefMinkowski = (float*) malloc(nLinhas * sizeof(float));
-
-    for(int quebraLinhas = 0; quebraLinhas < 4; quebraLinhas++){
-        fscanf(configuracao, "%s", pathTreino);
-        fscanf(configuracao, "%s", pathTeste);
-        fscanf(configuracao, "%s", pathPredicao);
+void maloqueiroPaths(int *tamanhoString, const int counterLinhas, char *pathTreino, char *pathTeste, char *pathPredicao){
+    switch(counterLinhas){
+        case 1:
+            pathTreino = (char*) calloc(*tamanhoString, sizeof(char));
+            puts("alocado pathTreino");
+            break;
+        case 2:
+            pathTeste = (char*) calloc(*tamanhoString, sizeof(char));
+            puts("alocado pathTeste");
+            break;
+        case 3:
+            pathPredicao = (char*) calloc(*tamanhoString, sizeof(char));
+            puts("alocado pathPredicao");
+            break;
     }
+    *tamanhoString = 0;
+}
 
-    int nLinhas = 0;
-    for(int i = 0; !feof(configuracao); i++){
-        while(configuracao != "\n"){ 
-            fscanf(configuracao, "%i, %c", &k[i], &distancia[i]);
-            if(k[i] == 'M')
-                fscanf(configuracao, "%f", &coefMinkowski[i]);
-            else
-                coefMinkowski[i] = NULL;
+void maloqueiroVectors(int *counterLinhas, int *k, char *distancia, float *coefMinkowski){
+    k = (int*) calloc(*counterLinhas, sizeof(int));
+    distancia = (char*) calloc(*counterLinhas, sizeof(char));
+    coefMinkowski = (float*) calloc(*counterLinhas, sizeof(float));
+}
+
+void setupConfig(FILE *config, char *pathTreino, char *pathTeste, char *pathPredicao, int *k, char *distancia, float *coefMinkowski, int *nLinhas){
+    int tamanhoString = 0, charAtual; 
+
+
+    do{
+        tamanhoString++;
+        charAtual = fgetc(config);
+
+        if(charAtual != '\n') tamanhoString++;
+        else {
+            *nLinhas++;
+            maloqueiroPaths(&tamanhoString, *nLinhas, pathTreino, pathTeste, pathPredicao);
         }
-        nLinhas++;
-    }
+    }while(charAtual != EOF);
 
-    *linhas = nLinhas;
-    rewind(configuracao);
+    //-1 pois o EOF é depois do \n
+    *nLinhas--;
+    // -3 pois as 3 primeiras linhas são paths
+    maloqueiroVectors(nLinhas - 3, k, distancia, coefMinkowski);
 }
 
 void main(){
-    FILE *config = fopen("iris/config.txt", "r");
-    int *k, nLinhas;
+    int *k, nLinhas = 0;
     char *tipoDistancia, *pathTreino, *pathTeste, *pathPredicao;
     float *coefMinkowski;
+    FILE *config = fopen("iris/config.txt", "r");
 
-    openConfig(config, pathTreino, pathTeste, pathPredicao, k, tipoDistancia, coefMinkowski, &nLinhas);
-
-// printa os vetores
-    printf("Path Treino = %s\nPathTeste = %s\nPathPredicao = %s", pathTreino, pathTeste, pathPredicao);
-    for(int i = 0; i < sizeof(k); i++){
-        printf("K[%i] = %i\nDist[%i] = %c\ncoefMinkowski[%i] = %f\n\n", i, k[i], i, tipoDistancia[i], i, coefMinkowski[i]);
+    if(config == NULL){
+        printf("Deu bosta. Fechando.\n\n");
+            exit(EXIT_FAILURE);
     }
 
-    free(k);
-    free(coefMinkowski);
-    fclose(config);
+    setupConfig(config, pathTreino, pathTeste, pathPredicao, k, tipoDistancia, coefMinkowski, &nLinhas);
+
+    // printa os vetores
+    // printf("Path Treino = %p \nPath Teste = %p \nPath Predicao = %p\n==========================\n", &pathTreino, &pathTeste, &pathPredicao);
+
+    for(int i = 0; i < nLinhas; i++){
+        k[i] = i;
+        printf("K%i %i\n", i, k[i]);
+        tipoDistancia[i] = (char) i;
+        printf("tipoDistancia%i %i\n", i, tipoDistancia[i]);
+        coefMinkowski[i] = (float) i;
+        printf("coefMinkowski%i %i\n", i, coefMinkowski[i]);
+    }
+
+    // free(k);
+    // free(tipoDistancia);
+    // free(coefMinkowski);
+    // free(pathTreino);
+    // free(pathTeste);
+    // free(pathPredicao);
+    // fclose(config);
 
 
-    /*
+/*
     FILE *arq = fopen("vowels/dataset/vowels_teste.csv", "r");
     float **amostras;
     float *rotulo;
@@ -127,5 +157,5 @@ void main(){
     free(rotulo);
     fclose(arq);
     printf("\n\n");
-    */
+*/
 }
