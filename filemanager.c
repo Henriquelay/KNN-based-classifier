@@ -57,6 +57,7 @@ int countLinhas(FILE *arquivo){
         if(charAtual == 10) nLinhas++;
 
     rewind(arquivo);
+    nLinhas--;  //pois o arquivo quebra linha mais uma vez antes do EOF
     return nLinhas;
 }
 
@@ -114,16 +115,70 @@ void configPaths(FILE *config, char **pathTreino, char **pathTeste, char **pathP
     //o ponteiro de STREAM está apontando para o início dos vetores de dados.
 }
 
-void configKNN(FILE *config, int *k, char *tipoDistancia, float *coefMinkowski, int *nLinhas){
+void configKNN(FILE *config, int *k, char *tipoDistancia, float *coefMinkowski, int nLinhas){
+    int *kVet, nAmostras = nLinhas - 3;    //pois as 3 primeiras são PATHs
+    char *tipoDistanciasVet;
+    float *vetMinkowski;
 
-    
+    k = (int *) calloc(nAmostras, sizeof(int));
+    tipoDistancia = (char *) calloc(nAmostras, sizeof(char));
+    coefMinkowski = (float *) calloc(nAmostras, sizeof(float));
+
+
+    kVet = (int *) calloc(nAmostras, sizeof(int));
+    tipoDistanciasVet = (char *) calloc(nAmostras, sizeof(char));
+    vetMinkowski = (float *) calloc(nAmostras, sizeof(float));
+
+    for(int i = 0; i < nAmostras; i++){
+        fscanf(config, "%d, %c", &kVet[i], &tipoDistanciasVet[i]);
+        // printf("%d %c\n", kVet[i], tipoDistanciasVet[i]);
+        if(tipoDistanciasVet[i] == 'M'){
+            fscanf(config, ", %f\n", &vetMinkowski[i]);
+            // printf("%.2f\n", vetMinkowski[i]);
+        }else{
+            // printf("%p\n", &*coefMinkowski[i]);
+            // *coefMinkowski[i] = 0.00;
+            // printf("%.2f\n", vetMinkowski[i]);
+            fgetc(config);
+        }
+    }
+
+    k = kVet;
+    tipoDistancia = tipoDistanciasVet;
+    coefMinkowski = vetMinkowski;
+
 }
+
+ 
+
+
+// void configKNN(FILE *config, int **k, char **tipoDistancia, float **coefMinkowski, int nLinhas){
+//     int nAmostras = nLinhas - 3;    //pois as 3 primeiras são PATHs
+
+//     *k = (int *) calloc(nAmostras, sizeof(int));
+//     *tipoDistancia = (char *) calloc(nAmostras, sizeof(char));
+//     *coefMinkowski = (float *) calloc(nAmostras, sizeof(float));
+
+//     for(int i = 0; i < 3; i++){
+//         fscanf(config, "%d, %c", &*k[i], &*tipoDistancia[i]);
+//         printf("%d %c\n", *k[i], *tipoDistancia[i]);
+//         if(*tipoDistancia[i] == 'M'){
+//             fscanf(config, ", %f\n", &*coefMinkowski[i]);
+//             printf("%.2f\n", *coefMinkowski[i]);
+//         }else{
+//             // printf("%p\n", &*coefMinkowski[i]);
+//             // *coefMinkowski[i] = 0.00;
+//             printf("%.2f\n", *coefMinkowski[i]);
+//             fgetc(config);
+//         }
+//     }
+// }  
 
 
 void main(){
     FILE *config = fopen("iris/config.txt", "r");
     int *k, nLinhas = countLinhas(config);
-    char *pathTreino, *pathTeste, *pathPredicao;
+    char *pathTreino, *pathTeste, *pathPredicao, *tipoDistancia;
     float *coefMinkowski;
     
 
@@ -136,18 +191,17 @@ void main(){
 
     configPaths(config, &pathTreino, &pathTeste, &pathPredicao);
     
-    // configKNN(config, k, tipoDistancia, coefMinkowski);
-
+    configKNN(config, k, tipoDistancia, coefMinkowski, nLinhas);
 
     //preenche e printa os vetores de dados
-    // for(int i = 0; i < nLinhas; i++){
+    for(int i = 0; i < nLinhas - 3; i++){
     // //     k[i] = i;
-    //     printf("K%i %i\n", i, k[i]);
+        printf("K%i %i\n", i, k[i]);
     // //     tipoDistancia[i] = (char) i;
-    //     printf("tipoDistancia%i %i\n", i, tipoDistancia[i]);
+        printf("tipoDistancia%i %i\n", i, tipoDistancia[i]);
     // //     coefMinkowski[i] = (float) i;
-    //     printf("coefMinkowski%i %f\n", i, coefMinkowski[i]);
-    // }
+        printf("coefMinkowski%i %f\n", i, coefMinkowski[i]);
+    }
 
     // free(k);
     // free(tipoDistancia);
