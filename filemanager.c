@@ -201,16 +201,16 @@ void main(){
     puts("Vetores de vdd");
     for(int i = 0; i < nLinhas - 3; i++){
     // //     k[i] = i;
-        printf("K%i %i\n", i, k[i]);
+        printf("K%i \t\t%i\n", i, k[i]);
     // //     tipoDistancia[i] = (char) i;
-        printf("tipoDistancia%i %c\n", i, tipoDistancia[i]);
+        printf("tipoDistancia%i \t %c\n", i, tipoDistancia[i]);
     // //     coefMinkowski[i] = (float) i;
-        printf("coefMinkowski%i %f\n", i, coefMinkowski[i]);
+        printf("coefMinkowski%i \t%.2f\n", i, coefMinkowski[i]);
     }
 
-    // free(k);
-    // free(tipoDistancia);
-    // free(coefMinkowski);
+    free(k);
+    free(tipoDistancia);
+    free(coefMinkowski);
     // rewind(config);
     free(pathTeste);
     free(pathPredicao);
