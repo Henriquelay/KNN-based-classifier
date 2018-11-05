@@ -1,6 +1,6 @@
-/* HEADER PARA A BIBLIOTECA FILEMANAGER */
-#ifndef _H_FILEMANAGER
-#define _H_FILEMANAGER
+/* HEADER PARA A BIBLIOTECA OPENFILE */
+#ifndef _H_OPENFILE
+#define _H_OPENFILE
 /*Aqui vai as funcoes*/
 
 void textSize(FILE*, int*, int*);
@@ -9,10 +9,7 @@ void transcribe(FILE*, float**, float*, int, int);
 int countLinhas(FILE*);
 int countChars(FILE*, int);
 void tiraQuebra(char*);
-void configPaths(FILE*, char**, char**, char**);
-void configKNN(FILE*, int**, char**, float**, int*);
-
-
+void setupConfig(FILE*, char**, char**, char**, int**, char**, float**, int*);
 
 /*Endif para evitar warnings*/
 #endif
