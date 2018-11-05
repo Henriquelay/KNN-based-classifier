@@ -64,8 +64,9 @@ int countChars(FILE *arquivo, int linha){
     while((charAtual = fgetc(arquivo)) != EOF){
         if(nLinhas == linha){
             nChars++;
-            while((charAtual = getc(arquivo)) != 10)        //10 é \n em int
+            do{
                 nChars++;
+            }while((charAtual = getc(arquivo)) != 10);        //10 é \n em int
         }
         if(charAtual == '\n') nLinhas++;
     }
@@ -76,11 +77,20 @@ int countChars(FILE *arquivo, int linha){
 void setupConfig(FILE *config, char *pathTreino, char *pathTeste, char *pathPredicao, int *k, char *tipoDistancia, float *coefMinkowski, int *nLinhas){
     *nLinhas = countLines(config);
 
-    printf("NChar linha 2 = %i", countChars(config, 3));
+    printf("NChar linha 2 = %i\n", countChars(config, 3));
 
-    // pathTreino = (char*) malloc(countChars(config, 1) * sizeof(char));
-    // pathTeste = (char*) malloc(countChars(config, 2) * sizeof(char));
-    // pathPredicao = (char*) malloc(countChars(config, 3) * sizeof(char));
+    pathTreino = (char*) malloc(countChars(config, 1) * sizeof(char));
+    pathTeste = (char*) malloc(countChars(config, 2) * sizeof(char));
+    pathPredicao = (char*) malloc(countChars(config, 3) * sizeof(char));
+
+    
+    fgets(pathTreino, (countChars(config, 1)), config);
+    fgets(pathTeste, (countChars(config, 2)), config);
+    fgets(pathPredicao, (countChars(config, 3)), config);
+
+    printf("%s\n", pathTreino);
+    printf("%s\n", pathTeste);
+    printf("%s\n", pathPredicao);
 
     // k = (int*) malloc(*nLinhas * sizeof(int));
     // tipoDistancia = (char*) malloc(*nLinhas * sizeof(char));
