@@ -10,7 +10,7 @@ void transcribe(FILE*, float**, float*, int, int);
 int countLinhas(FILE*);
 int countChars(FILE*, int);
 void tiraQuebra(char*);
-void setupConfig(FILE*, char**, char**, char**, int**, char**, float**, int*);
+void setupConfig(FILE*, char**, char**, char**, int**, char**, float**, int);
 
 /*Endif para evitar warnings*/
 #endif

@@ -6,7 +6,7 @@ CFLAGS=-Wall -g
 OBJ= distancias.o openfile.o main.o
 EXEC= distancias openfile
 
-all: main
+all: clean main
 	$ rm *.o
 
 main: ${OBJ}

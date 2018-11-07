@@ -4,13 +4,13 @@
 #include <stdlib.h>
 
 void main(){
-    FILE *config = fopen("iris/config.txt", "r");
-    int *k, nLinhas;
+    FILE *config = fopen("vowels/config.txt", "r");
+    int *k, nLinhas = countLinhas(config);
     float *coefMinkowski;
     char *tipoDistancia;
     char *pathTreino, *pathTeste, *pathPredicoes;
 
-    setupConfig(config, &pathTreino, &pathTeste, &pathPredicoes, &k, &tipoDistancia, &coefMinkowski, &nLinhas);
+    setupConfig(config, &pathTreino, &pathTeste, &pathPredicoes, &k, &tipoDistancia, &coefMinkowski, nLinhas);
 
     puts("PATHS:");
     printf("%s\n", pathTreino);
