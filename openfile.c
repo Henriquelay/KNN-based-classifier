@@ -40,7 +40,7 @@ void printaMatriz(float **matriz, float *iD, int nColunas, int nLinhas){
 //pega os dados dos datasets e passa para vetores no programa
 void transcribe(FILE *arquivo, float **matrizAmostra, float *rotuloVet, int colunas, int linhas){
     for(int i = 0; !feof(arquivo); i++){
-        for(int j = 0; j < colunas; j++){ 
+        for(int j = 0; j < colunas; j++){
             fscanf(arquivo, "%f,", &matrizAmostra[i][j]);
             if(j==(colunas-1)){
                 fscanf(arquivo, "%f", &rotuloVet[i]);
@@ -48,6 +48,7 @@ void transcribe(FILE *arquivo, float **matrizAmostra, float *rotuloVet, int colu
         }
     }
     rewind(arquivo);
+    fclose(arquivo);
 }
 
 int countLinhas(FILE *arquivo){
