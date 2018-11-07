@@ -2,6 +2,7 @@
 #ifndef _H_OPENFILE
 #define _H_OPENFILE
 /*Aqui vai as funcoes*/
+#include <stdio.h>
 
 void textSize(FILE*, int*, int*);
 void printaMatriz(float**, float*, int, int);

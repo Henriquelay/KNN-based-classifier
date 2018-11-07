@@ -106,11 +106,7 @@ void setupConfig(FILE *config, char **pathTreino, char **pathTeste, char **pathP
 
     tiraQuebra(*pathTreino);
     tiraQuebra(*pathTeste);
-    tiraQuebra(*pathPredicao);
-
-    printf("%s\n", *pathTreino);
-    printf("%s\n", *pathTeste);
-    printf("%s\n", *pathPredicao);
+    tiraQuebra(*pathPredicao);;
     //o ponteiro de STREAM está apontando para o início dos vetores de dados.
     //Final da leitura de PATHs
     //início da leitura dos vetores
@@ -137,6 +133,7 @@ void setupConfig(FILE *config, char **pathTreino, char **pathTeste, char **pathP
     fclose(config);
 }
 
+/* MAIN PARA TESTES E DEBUG
 void main(){
     FILE *config = fopen("iris/config.txt", "r");
     int *k, nLinhas = countLinhas(config);
@@ -161,3 +158,5 @@ void main(){
     free(tipoDistancia);
     free(coepMinkowski);
 }
+
+*/

@@ -3,12 +3,14 @@
 CC=gcc
 # liga algumas flags de warn, mas não todas
 CFLAGS=-Wall -g
+OBJ= distancias.o openfile.o main.o
+EXEC= distancias openfile
 
 all: main
 	$ rm *.o
 
-main: main.o distancias.o openfile.o
-	$ ${CC} -o main main.o distancias.o openfile.o -lm ${CFLAGS}
+main: ${OBJ}
+	$ ${CC} -o main ${OBJ} -lm ${CFLAGS}
 
 main.o: main.c
 	$ ${CC} -c main.c ${CFLAGS}
@@ -20,10 +22,13 @@ openfile.o: openfile.c
 	$ ${CC} -c openfile.c ${CFLAGS}
 
 clean:
-	$ rm *.o
+	$(rm *.o)
+	$(rm main)
+	$(rm distancias)
+	$(rm openfile)
 
 run: main
-	$./main
+	$(./main)
 
 val: main
 	$(valgrind ./main)
