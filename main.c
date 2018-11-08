@@ -21,7 +21,6 @@ void main(){
     // for(int i = 0; i < linhasConfig - 3; i++){
     //     printf("%d %c %.2f\n", k[i], tipoDistancia[i], coefMinkowski[i]);
     // }
-    fclose(config);
 
 
     FILE *treino = fopen("iris/dataset/iris_treino.csv", "r");
@@ -38,7 +37,6 @@ void main(){
     
     transcribe(treino, matrizTreino, rotuloTreino, colunasTreino, linhasTreino);
 
-    fclose(treino);
     // puts("\nTREINO:");
     // printaMatriz(matrizTreino, rotuloTreino, colunasTreino, linhasTreino);
 
@@ -56,15 +54,9 @@ void main(){
     
     transcribe(teste, matrizTeste, rotuloTeste, colunasTeste, linhasTeste);
 
-    fclose(teste);
     // puts("\nTESTE:");
     // printaMatriz(matrizTeste, rotuloTeste, colunasTeste, linhasTeste);
 
-
-
-    
-
-    // free temporário (remover ao continaur o programa)
 
     ///COMEÇO DO KNN
 
@@ -85,18 +77,28 @@ void main(){
     // //CALCULO DE DISTÂNCIA (EUCLIDES PARA FACILITAR OS TESTES)
     for(int aTst = 0; aTst < linhasTeste; aTst++){
         for(int aTrn = 0; aTrn < linhasTreino; aTrn ++){
-            (vizinho[aTst][aTrn]).dist = euclidesVetor(matrizTeste[aTst],colunasTeste, matrizTreino[aTrn], colunasTreino);
-            (vizinho[aTst][aTrn]).rotulo = rotuloTreino[aTrn];
+            switch(tipoDistancia[2]){
+                case 'E':
+                    vizinho[aTst][aTrn].dist = euclidesVetor(matrizTeste[aTst],colunasTeste, matrizTreino[aTrn], colunasTreino);
+                    break;
+                case 'C':
+                    vizinho[aTst][aTrn].dist = chebyshevVetor(matrizTeste[aTst],colunasTeste, matrizTreino[aTrn], colunasTreino);
+                    break;
+                case 'M':
+                    vizinho[aTst][aTrn].dist = minkowskiVetor(matrizTeste[aTst],colunasTeste, matrizTreino[aTrn], colunasTreino, coefMinkowski[1]);
+            }
+            vizinho[aTst][aTrn].rotulo = rotuloTreino[aTrn];
         }
     }
 
-    for(int i = 0;  i < linhasTeste; i++){
-        for(int j = 0; j < linhasTreino; j++){
-            printf("%f ", (vizinho[i][j]).dist); 
-        }
-    }
+    // for(int i = 0;  i < linhasTeste; i++){
+    //     for(int j = 0; j < linhasTreino; j++){
+    //         printf("%f ", ((vizinho[i][j]).dist)); 
+    //     }
+    //     puts("");
+    // }
 
-
+    // free temporário (remover ao continaur o programa)
     free(k);
     free(coefMinkowski);
     free(tipoDistancia);
