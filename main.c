@@ -65,17 +65,6 @@ void main(){
     
 
     // free temporário (remover ao continaur o programa)
-    free(k);
-    free(coefMinkowski);
-    free(tipoDistancia);
-    free(pathTreino);
-    free(pathTeste);
-    free(pathPredicoes);
-
-    free(matrizTreino);
-    free(rotuloTreino);
-    free(matrizTeste);
-    free(rotuloTeste);
 
     ///COMEÇO DO KNN
 
@@ -108,6 +97,17 @@ void main(){
     }
 
 
+    free(k);
+    free(coefMinkowski);
+    free(tipoDistancia);
+    free(pathTreino);
+    free(pathTeste);
+    free(pathPredicoes);
+
+    free(matrizTreino);
+    free(rotuloTreino);
+    free(matrizTeste);
+    free(rotuloTeste);
     free(vizinho);
     puts("");
 }
