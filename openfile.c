@@ -12,7 +12,7 @@ struct Tamostra{
 struct Tpaths{
     char *pathTreino;
     char *pathTeste;
-    char *pathPredicoes;
+    char *pathPredicao;
 };
 
 Tpaths* novoPaths(char* treino, char* teste, char* predicoes){
@@ -23,8 +23,37 @@ Tpaths* novoPaths(char* treino, char* teste, char* predicoes){
 
     strcpy(t->pathTreino, treino);
     strcpy(t->pathTeste, teste);
-    strcpy(t->pathPredicoes, predicoes);
+    strcpy(t->pathPredicao, predicoes);
 
+    free(treino);
+    free(teste);
+    free(predicoes);
+
+    return t;
+}
+
+char* returnPath(Tpaths path, int x){
+    switch(x){
+        case 1: 
+            return path.pathTreino;
+        case 2: 
+            return path.pathTeste;
+        case 3: 
+            return path.pathPredicao;        
+    }
+    return NULL;
+}
+
+void printerAmostras(Tamostras *amostra){
+        printf("K = %i\tTipoDistancia = %c\tCoefMinkowski = %f\n", amostra->k, amostra->tipoDistancia, amostra->coefMinkowski);
+}
+
+Tamostra* novaAmostra(int k, char tipoDistancia, float coefMinkowski){
+    Tamostra* t = (Tamostra*) malloc(sizeof(Tamostra));
+
+    t->k = k;
+    t->tipoDistancia = tipoDistancia;
+    t->coefMinkowski = coefMinkowski;
     return t;
 }
 
@@ -118,20 +147,22 @@ void tiraQuebra(char *string){
 
 //pega os PATHs do config para vetores do programa
 Tpaths* setupPaths(FILE *config){
-    int sizeTreino = countChars(config, 1) +1;
-    int sizeTeste = countChars(config, 2) +1;
-    int sizePerdicao = countChars(config, 3) +1;
+    int sizeTreino = countChars(config, 1) + 1;
+    int sizeTeste = countChars(config, 2) + 1;
+    int sizePerdicao = countChars(config, 3) + 1;
     //+1 para ter espaço para o \n e \0 da string a ser inserida
     
-    char *treinoTemp, *testeTemp, *predicaoTemp;
+    char *treinoTemp = (char*) malloc(sizeTreino * sizeof(char));
+    char *testeTemp = (char*) malloc(sizeTeste * sizeof(char));
+    char *predicaoTemp = (char*) malloc(sizePerdicao * sizeof(char));
 
     fgets(treinoTemp, sizeTreino, config);
     fgets(testeTemp, sizeTeste, config);
     fgets(predicaoTemp, sizePerdicao, config);
 
-    tiraQuebra(treinoTemp);
-    tiraQuebra(testeTemp);
-    tiraQuebra(predicaoTemp);
+    strtok(treinoTemp, "\n");
+    strtok(testeTemp, "\n");
+    strtok(predicaoTemp, "\n");
 
     Tpaths *t = novoPaths(treinoTemp, testeTemp, predicaoTemp);
 
@@ -140,53 +171,50 @@ Tpaths* setupPaths(FILE *config){
     //o ponteiro de STREAM está apontando para o início dos vetores de dados.
     //Final da leitura de PATHs
     //início da leitura dos vetores
-    int nAmostras = nLinhas - 3;    //pois as 3 primeiras são PATHs
+void setupAmostra(FILE *config, int nLinhasVetores, Tamostra **amostra){
+    int k;
+    char tipoDistancia;
+    float coefMinkowski;
 
-    int *kVet = (int*) calloc(nAmostras, sizeof(int));
-    char *tipoDistanciaVet = (char*) calloc(nAmostras, sizeof(char));
-    float *coefMinkowskiVet = (float*) calloc(nAmostras, sizeof(float));
 
-
-    for(int i = 0; i < nAmostras; i++){
-        fscanf(config, "%d, %c", &kVet[i], &tipoDistanciaVet[i]);
-        if(tipoDistanciaVet[i] == 'M'){
-            fscanf(config, ", %f\n", &coefMinkowskiVet[i]);
+    for(int i = 0; i < nLinhasVetores; i++){
+        fscanf(config, "%d, %c", &k, &tipoDistancia);
+        if(tipoDistancia == 'M'){
+            fscanf(config, ", %f\n", &coefMinkowski);
         }else{
+            coefMinkowski = 0;
             fgetc(config);
         }
-    }
 
-    *k = kVet;
-    *tipoDistancia = tipoDistanciaVet;
-    *coefMinkowski = coefMinkowskiVet;
+        amostra[i] = novaAmostra(k, tipoDistancia, coefMinkowski);
+    }
 
     fclose(config);
 }
 
-/* MAIN PARA TESTES E DEBUG
-void main(){
-    FILE *config = fopen("iris/config.txt", "r");
-    int *k, nLinhas = countLinhas(config);
-    char *pathTreino, *pathTeste, *pathPredicao;
-    char *tipoDistancia;
-    float *coepMinkowski;
+// MAIN PARA TESTES E DEBUG
+/*void main(){
+    FILE *config = fopen("vowels/config.txt", "r");
+    int nLinhas = countLinhas(config), nLinhasVetores = nLinhas - 3; //pois as 3 primeiras são paths
+    //setupPaths deve ser usado antes de setupAmostras por conta de posição do ponteiro da STREAM
+    Tpaths *paths = setupPaths(config);
+    Tamostra **amostra = (Tamostra**) malloc(nLinhasVetores * sizeof(Tamostra*));
 
-    setupConfig(config, &pathTreino, &pathTeste, &pathPredicao, &k, &tipoDistancia, &coepMinkowski, nLinhas);
+    setupAmostra(config, nLinhasVetores, amostra);
 
-    printf("\tPATHS\nPath Treino = %s\nPath Testes = %s\nPath Perdicao = %s\n", pathTreino, pathTeste, pathPredicao);
+    printf("\tPATHS\nPath Treino = %s\nPath Testes = %s\nPath Perdicao = %s\n", paths->pathTreino, paths->pathTeste, paths->pathPredicao);
 
-    puts("");
-    puts("VETORES");
+    printf("\n\tVETORES\n");
     for(int i = 0; i < nLinhas - 3; i++){
-        printf("K[%i] = %i\t distancia[%i] = %c\t maicozosque[%i] = %f\n", i, k[i], i, tipoDistancia[i], i, coepMinkowski[i]);
+        printf("K[%i] = %i\t distancia[%i] = %c\t maicozosque[%i] = %f\n", i, amostra[i]->k, i, amostra[i]->tipoDistancia, i, amostra[i]->coefMinkowski);
     }
 
-    free(pathTreino);
-    free(pathTeste);
-    free(pathPredicao);
-    free(k);
-    free(tipoDistancia);
-    free(coepMinkowski);
+    free(paths->pathTreino);
+    free(paths->pathTeste);
+    free(paths->pathPredicao);
+    free(paths);
+    for(int index = 0; index < nLinhasVetores; index++)
+        free(amostra[index]);
+    free(amostra);
 }
-
 */
