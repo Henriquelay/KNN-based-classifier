@@ -2,30 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//conta colunas e linhas para carregar os arquivos de dados
-void textSize(FILE *arquivo, int *colunas, int *linhas){
-    char *texto;
-    texto = (char *)malloc(sizeof(char));
-    int c = 0, l = 0;
-
-    for(int i = 0; !feof(arquivo); i++){
-        fscanf(arquivo, "%c", &texto[i]);
-        if(l==0){
-            if(texto[i] == ','){
-                c++;
-            }
-        }
-        if(texto[i] == '\n'){
-            l++;
-        }
-        texto = realloc(texto, (i+2)*sizeof(char));
-    }
-    free(texto);
-    rewind(arquivo);
-
-    *colunas = c;
-    *linhas = l;
-}
 
 //debug apenas. mostra os vetores dos arquivos de dados
 void printaMatriz(float **matriz, float *iD, int nColunas, int nLinhas){
@@ -37,16 +13,47 @@ void printaMatriz(float **matriz, float *iD, int nColunas, int nLinhas){
     }
 }
 
-//pega os dados dos datasets e passa para vetores no programa
-void transcribe(FILE *arquivo, float **matrizAmostra, float *rotuloVet, int colunas, int linhas){
+
+//Lê os arquivos de teste ou treino e guarda as informações em uma matriz
+void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *linhas, int *colunas){
+    char junkChar;
+    float **matriz;
+    float *rotulo;
+    int c = 0, l = 0;
+    
     for(int i = 0; !feof(arquivo); i++){
-        for(int j = 0; j < colunas; j++){ 
-            fscanf(arquivo, "%f,", &matrizAmostra[i][j]);
-            if(j==(colunas-1)){
-                fscanf(arquivo, "%f", &rotuloVet[i]);
-            }
+        fscanf(arquivo, "%c", &junkChar);
+        if(junkChar == ','){
+            c++;
+        }else if (junkChar == '\n'){
+            break;
         }
     }
+    rewind(arquivo);
+
+    matriz = (float **) calloc(1, sizeof(float *));
+    rotulo = (float *) calloc(1, sizeof(float));
+
+    for(int i = 1; !feof(arquivo); i++){
+        l++;
+        rotulo = (float *) realloc(rotulo, (i)*sizeof(float));
+        matriz = (float **) realloc(matriz, (i)*sizeof(float *));
+        
+        matriz[i-1] = (float *) calloc(c, sizeof(float));
+        for(int j = 0; j<c; j++){
+            fscanf(arquivo, "%f%c", &matriz[i-1][j], &junkChar);
+        }
+        fscanf(arquivo, "%f%c", &rotulo[i-1], &junkChar);
+    }
+    l--; //Os arquivos de teste e treino possui uma linha em branco no final do arquivo
+    matriz = (float **) realloc(matriz, l*sizeof(float *));
+    
+    *linhas = l;
+    *colunas = c;
+
+    *matrizAmostra  = matriz;
+    *rotuloVet = rotulo;
+
     rewind(arquivo);
 }
 
@@ -133,30 +140,27 @@ void setupConfig(FILE *config, char **pathTreino, char **pathTeste, char **pathP
     fclose(config);
 }
 
-/* MAIN PARA TESTES E DEBUG
+// MAIN PARA TESTES E DEBUG
 void main(){
-    FILE *config = fopen("iris/config.txt", "r");
-    int *k, nLinhas = countLinhas(config);
-    char *pathTreino, *pathTeste, *pathPredicao;
-    char *tipoDistancia;
-    float *coepMinkowski;
+    FILE *treino = fopen("iris/dataset/iris_teste.csv", "r");
+    float **matrizTreino, *rotuloTreino;
+    int linhasTreino, colunasTreino;
 
-    setupConfig(config, &pathTreino, &pathTeste, &pathPredicao, &k, &tipoDistancia, &coepMinkowski, nLinhas);
-
-    printf("\tPATHS\nPath Treino = %s\nPath Testes = %s\nPath Perdicao = %s\n", pathTreino, pathTeste, pathPredicao);
-
-    puts("");
-    puts("VETORES");
-    for(int i = 0; i < nLinhas - 3; i++){
-        printf("K[%i] = %i\t distancia[%i] = %c\t maicozosque[%i] = %f\n", i, k[i], i, tipoDistancia[i], i, coepMinkowski[i]);
+    transcribe(treino, &matrizTreino, &rotuloTreino, &linhasTreino, &colunasTreino);
+    
+    for(int i = 0;  i < linhasTreino; i++){
+        for(int j = 0; j < colunasTreino; j++){
+            printf("%.2f ", matrizTreino[i][j]); 
+        }
+        printf("%.f\n", rotuloTreino[i]);
     }
 
-    free(pathTreino);
-    free(pathTeste);
-    free(pathPredicao);
-    free(k);
-    free(tipoDistancia);
-    free(coepMinkowski);
+    free(matrizTreino);
+    // free(rotuloTreino);
+    fclose(treino);
+
+
+
+
 }
 
-*/
