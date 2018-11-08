@@ -1,6 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "openfile.h"
+
+struct Tamostra{
+    int k;
+    char tipoDistancia;
+    float coefMinkowski;
+};
+
+struct Tpaths{
+    char *pathTreino;
+    char *pathTeste;
+    char *pathPredicoes;
+};
+
+Tpaths* novoPaths(char* treino, char* teste, char* predicoes){
+    Tpaths* t = (Tpaths*) malloc(sizeof(Tpaths));
+    t->pathTreino = (char*) malloc(strlen(treino) + sizeof(char));
+    t->pathTeste = (char*) malloc(strlen(treino) + sizeof(char));
+    t->pathPredicao = (char*) malloc(strlen(treino) + sizeof(char));
+
+    strcpy(t->pathTreino, treino);
+    strcpy(t->pathTeste, teste);
+    strcpy(t->pathPredicoes, predicoes);
+
+    return t;
+}
 
 //conta colunas e linhas para carregar os arquivos de dados
 void textSize(FILE *arquivo, int *colunas, int *linhas){
@@ -91,22 +117,26 @@ void tiraQuebra(char *string){
 }
 
 //pega os PATHs do config para vetores do programa
-void setupConfig(FILE *config, char **pathTreino, char **pathTeste, char **pathPredicao, int **k, char **tipoDistancia, float **coefMinkowski, int nLinhas){
+Tpaths* setupPaths(FILE *config){
     int sizeTreino = countChars(config, 1) +1;
     int sizeTeste = countChars(config, 2) +1;
     int sizePerdicao = countChars(config, 3) +1;
-
-    *pathTreino = (char*) malloc(sizeTreino * sizeof(char));
-    *pathTeste = (char*) malloc(sizeTeste * sizeof(char));
-    *pathPredicao = (char*) malloc(sizePerdicao * sizeof(char));
+    //+1 para ter espaço para o \n e \0 da string a ser inserida
     
-    fgets(*pathTreino, sizeTreino, config);
-    fgets(*pathTeste, sizeTeste, config);
-    fgets(*pathPredicao, sizePerdicao, config);
+    char *treinoTemp, *testeTemp, *predicaoTemp;
 
-    tiraQuebra(*pathTreino);
-    tiraQuebra(*pathTeste);
-    tiraQuebra(*pathPredicao);;
+    fgets(treinoTemp, sizeTreino, config);
+    fgets(testeTemp, sizeTeste, config);
+    fgets(predicaoTemp, sizePerdicao, config);
+
+    tiraQuebra(treinoTemp);
+    tiraQuebra(testeTemp);
+    tiraQuebra(predicaoTemp);
+
+    Tpaths *t = novoPaths(treinoTemp, testeTemp, predicaoTemp);
+
+    return t;
+}
     //o ponteiro de STREAM está apontando para o início dos vetores de dados.
     //Final da leitura de PATHs
     //início da leitura dos vetores

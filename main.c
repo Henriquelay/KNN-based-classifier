@@ -1,25 +1,29 @@
-#include "distancias.h"
-#include "openfile.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "distancias.h"
+#include "openfile.h"
+
+
 
 void main(){
     FILE *config = fopen("vowels/config.txt", "r");
-    int *k, nLinhas = countLinhas(config);
-    float *coefMinkowski;
-    char *tipoDistancia;
-    char *pathTreino, *pathTeste, *pathPredicoes;
-
-    setupConfig(config, &pathTreino, &pathTeste, &pathPredicoes, &k, &tipoDistancia, &coefMinkowski, nLinhas);
+    int nLinhas = countLinhas(config), nLinhasVetores = nLinhas - 3; //pois as 3 primeiras são paths
+    //setupPaths deve ser usado antes de setupAmostras por conta de posição do ponteiro da STREAM
+    Tpaths *paths = setupPaths(config);
+    Tamostra **amostra;
 
     puts("PATHS:");
-    printf("%s\n", pathTreino);
-    printf("%s\n", pathTeste);
-    printf("%s\n", pathPredicoes);
+    printf("%s\n", paths->pathTreino);
+    printf("%s\n", paths->pathTeste);
+    printf("%s\n", paths->pathPredicoes);
 
     puts("VETORES");
-    for(int i = 0; i < nLinhas - 3; i++){
-        printf("K[%i] = %i\t distancia[%i] = %c\t maicozosque[%i] = %f\n", i, k[i], i, tipoDistancia[i], i, coefMinkowski[i]);
+    for(int i = 0; i < nLinhasVetores; i++){
+        printf("K[%i] = %i\t Distancia[%i] = %c\t CoefMinKowski[%i] = %f\n", i, amostra.k[i], i, amostra.tipoDistancia[i], i, amostra.coefMinkowski[i]);
     }
     
+    for(int i = 0; i < nLinhasVetores; i++){
+
+    }
+
 }

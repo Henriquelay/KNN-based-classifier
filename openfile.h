@@ -4,6 +4,9 @@
 /*Aqui vai as funcoes*/
 #include <stdio.h>
 
+typedef struct Tpaths Tpaths;
+typedef struct Tamostra Tamostra;
+
 void textSize(FILE*, int*, int*);
 void printaMatriz(float**, float*, int, int);
 void transcribe(FILE*, float**, float*, int, int);
