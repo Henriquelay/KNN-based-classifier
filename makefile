@@ -6,7 +6,7 @@ CFLAGS=-Wall -g
 OBJ= distancias.o openfile.o main.o
 EXEC= distancias openfile
 
-all: clean main
+all: main
 	$ rm *.o
 
 main: ${OBJ}
@@ -22,13 +22,12 @@ openfile.o: openfile.c
 	$ ${CC} -c openfile.c ${CFLAGS}
 
 clean:
-	$(rm *.o)
-	$(rm main)
-	$(rm distancias)
-	$(rm openfile)
+	$ rm main
+	$ rm *.o
 
 run: main
-	$(./main)
+	$ rm *.o
+	$ ./main
 
 val: main
-	$(valgrind ./main)
+	$ valgrind ./main

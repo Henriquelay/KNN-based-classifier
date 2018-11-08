@@ -159,8 +159,5 @@ void main(){
     // free(rotuloTreino);
     fclose(treino);
 
-
-
-
 }
 
