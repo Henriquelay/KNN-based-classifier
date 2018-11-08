@@ -23,8 +23,10 @@ openfile.o: openfile.c
 
 clean:
 	$ rm main
+	$ rm *.o
 
 run: main
+	$ rm *.o
 	$ ./main
 
 val: main
