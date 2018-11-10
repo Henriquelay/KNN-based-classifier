@@ -91,6 +91,9 @@ int main(void){
     
     for(int i = 0; i < nLinhasVetores; i++){
 
+    printf("\n\tVETORES\n");
+    for(int i = 0; i < nLinhas - 3; i++){
+        printf("K[%i] = %i\t distancia[%i] = %c\t maicozosque[%i] = %f\n", i, amostra[i]->k, i, amostra[i]->tipoDistancia, i, amostra[i]->coefMinkowski);
     }
 
     free(paths->pathTreino);
