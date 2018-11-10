@@ -41,8 +41,10 @@ void knnDist(kneigh ***MatrizNeighs, float **matrizTreino, float *rotuloTreino, 
 }
 
 
+
+
 void main(){
-    FILE *config = fopen("iris/config.txt", "r");
+    FILE *config = fopen("vowels/config.txt", "r");
     int *k, linhasConfig;
     float *coefMinkowski;
     char *tipoDistancia;
@@ -96,12 +98,60 @@ void main(){
 
     knnDist(&matrizVizinhos, matrizTreino, rotuloTreino, matrizTeste, tipoDistancia[2], coefMinkowski[2], linhasTreino, colunasTreino, linhasTeste, colunasTeste);
 
-    for(int j = 0; j < linhasTreino; j++){
-        for(int i = 0;  i < linhasTeste; i++){
-            printf("%.f ", ((matrizVizinhos[i][j]).dist)); 
+
+
+    // for(int i = 0;  i < linhasTeste; i++){
+    //     for(int j = 0; j < linhasTreino; j++){
+    //         printf("%.f ", ((matrizVizinhos[i][j]).dist)); 
+    //     }
+    //     puts("");
+    // }
+
+    //PEGANDO OS K PRIMEIROS
+
+   
+
+    kneigh *vizinhoSord;
+    vizinhoSord = (kneigh *) malloc(linhasTreino * sizeof(kneigh));
+
+    int n = 0;
+
+    for(int i = 0; i<linhasTreino; i++){
+        if(n == 0){
+            vizinhoSord[n] = matrizVizinhos[0][i];
+            n++;            
+        }else if (matrizVizinhos[0][i].dist >= vizinhoSord[n-1].dist){
+            vizinhoSord = (kneigh *) realloc(vizinhoSord, (n+1) * sizeof(kneigh));
+            vizinhoSord[n] = matrizVizinhos[0][i];
+            n++;            
+        }else{
+            for(int c = 0; c<n; c++){
+                if(matrizVizinhos[0][i].dist <= vizinhoSord[c].dist){
+                    vizinhoSord = (kneigh *) realloc(vizinhoSord, (n+1) * sizeof(kneigh));
+                    for(int z = n; z>c; z--){
+                        vizinhoSord[z] = vizinhoSord[z-1];
+                    }
+                    vizinhoSord[c] = matrizVizinhos[0][i];
+                    n++;
+                    break;
+                }
+            }
         }
-        puts("");
     }
+
+    for(int i = 0; i<linhasTreino; i++){
+        printf("%f\n", vizinhoSord[i].dist);
+    }
+
+
+    vizinhoSord = (kneigh *) realloc(vizinhoSord, k[2] * sizeof(kneigh));
+
+    printf("K primeiros: ");
+    for(int i = 0; i<linhasTreino; i++){
+        printf("%f ", vizinhoSord[i].dist);
+    }
+    puts("");
+    
 
     // free temporário (remover ao continaur o programa)
     free(k);
@@ -117,5 +167,6 @@ void main(){
     free(matrizTeste);
     free(rotuloTeste);
     free(matrizVizinhos);
+    free(vizinhoSord);
     puts("");
 }
