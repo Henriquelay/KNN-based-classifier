@@ -41,10 +41,86 @@ void knnDist(kneigh ***MatrizNeighs, float **matrizTreino, float *rotuloTreino, 
 }
 
 
+void insortVetor(kneigh *vetor, kneigh **vizinhoSord, int sizeVetor){
+    int n = 0;
+
+    kneigh *sorted;
+    sorted = (kneigh *) malloc(sizeof(kneigh));
+
+    for(int i = 0; i<sizeVetor; i++){
+        if(n == 0){
+            sorted[n] = vetor[i];
+            n++;            
+        }else if (vetor[i].dist >= sorted[n-1].dist){
+            sorted = (kneigh *) realloc(sorted, (n+1) * sizeof(kneigh));
+            sorted[n] = vetor[i];
+            n++;            
+        }else{
+            for(int c = 0; c<n; c++){
+                if(vetor[i].dist <= sorted[c].dist){
+                    sorted = (kneigh *) realloc(sorted, (n+1) * sizeof(kneigh));
+                    for(int z = n; z>c; z--){
+                        sorted[z] = sorted[z-1];
+                    }
+                    sorted[c] = vetor[i];
+                    n++;
+                    break;
+                }
+            }
+        }
+    }
+
+    *vizinhoSord = sorted;
+}
+
+void insortVetorRotulo(kneigh *vetor, kneigh **vizinhoSord, int sizeVetor){
+    int n = 0;
+
+    kneigh *sorted;
+    sorted = (kneigh *) malloc(sizeof(kneigh));
+
+    for(int i = 0; i<sizeVetor; i++){
+        if(n == 0){
+            sorted[n] = vetor[i];
+            n++;            
+        }else if (vetor[i].rotulo >= sorted[n-1].rotulo){
+            sorted = (kneigh *) realloc(sorted, (n+1) * sizeof(kneigh));
+            sorted[n] = vetor[i];
+            n++;            
+        }else{
+            for(int c = 0; c<n; c++){
+                if(vetor[i].dist <= sorted[c].rotulo){
+                    sorted = (kneigh *) realloc(sorted, (n+1) * sizeof(kneigh));
+                    for(int z = n; z>c; z--){
+                        sorted[z] = sorted[z-1];
+                    }
+                    sorted[c] = vetor[i];
+                    n++;
+                    break;
+                }
+            }
+        }
+    }
+
+    *vizinhoSord = sorted;
+}
+
+void takeKNN(kneigh *vetorAmostra, int sizeVetor, int k, kneigh **knnVetor){
+    kneigh *vizinhoSord;
+
+    insortVetor(vetorAmostra, &vizinhoSord, sizeVetor);
+
+    vizinhoSord = (kneigh *) realloc(vizinhoSord, k * sizeof(kneigh));
+
+    *knnVetor = vizinhoSord;
+}
 
 
+
+
+// vo mata o gafanhoto
 void main(){
-    FILE *config = fopen("vowels/config.txt", "r");
+    FILE *config = fopen("iris/config.txt", "r");
     int *k, linhasConfig;
     float *coefMinkowski;
     char *tipoDistancia;
@@ -94,66 +170,45 @@ void main(){
 
     // ///COMEÇO DO KNN
 
+    //CALCULANDO AS DISTÂNCIAS
+
     kneigh **matrizVizinhos;
 
     knnDist(&matrizVizinhos, matrizTreino, rotuloTreino, matrizTeste, tipoDistancia[2], coefMinkowski[2], linhasTreino, colunasTreino, linhasTeste, colunasTeste);
 
 
 
-    // for(int i = 0;  i < linhasTeste; i++){
-    //     for(int j = 0; j < linhasTreino; j++){
-    //         printf("%.f ", ((matrizVizinhos[i][j]).dist)); 
-    //     }
-    //     puts("");
-    // }
-
     //PEGANDO OS K PRIMEIROS
 
-   
+    kneigh *vetorKNN;
 
-    kneigh *vizinhoSord;
-    vizinhoSord = (kneigh *) malloc(linhasTreino * sizeof(kneigh));
+    takeKNN(matrizVizinhos[1], linhasTreino, k[2], &vetorKNN);
 
-    int n = 0;
-
-    for(int i = 0; i<linhasTreino; i++){
-        if(n == 0){
-            vizinhoSord[n] = matrizVizinhos[0][i];
-            n++;            
-        }else if (matrizVizinhos[0][i].dist >= vizinhoSord[n-1].dist){
-            vizinhoSord = (kneigh *) realloc(vizinhoSord, (n+1) * sizeof(kneigh));
-            vizinhoSord[n] = matrizVizinhos[0][i];
-            n++;            
-        }else{
-            for(int c = 0; c<n; c++){
-                if(matrizVizinhos[0][i].dist <= vizinhoSord[c].dist){
-                    vizinhoSord = (kneigh *) realloc(vizinhoSord, (n+1) * sizeof(kneigh));
-                    for(int z = n; z>c; z--){
-                        vizinhoSord[z] = vizinhoSord[z-1];
-                    }
-                    vizinhoSord[c] = matrizVizinhos[0][i];
-                    n++;
-                    break;
-                }
-            }
-        }
-    }
-
-    for(int i = 0; i<linhasTreino; i++){
-        printf("%f\n", vizinhoSord[i].dist);
-    }
-
-
-    vizinhoSord = (kneigh *) realloc(vizinhoSord, k[2] * sizeof(kneigh));
-
-    printf("K primeiros: ");
-    for(int i = 0; i<linhasTreino; i++){
-        printf("%f ", vizinhoSord[i].dist);
+    printf("\nK primeiros: ");
+    for(int i = 0; i<k[2]; i++){
+        printf("%f ", vetorKNN[i].rotulo);
     }
     puts("");
+
     
 
-    // free temporário (remover ao continaur o programa)
+    // CLASSIFICA A AMOSTRA
+    // int maioria = (k[2]/2) + 1;
+    // int *ocorrenciasRot;
+    
+    // insortVetorRotulo(vetorKNN, &vetorKNN, k[2]);
+    
+    // int maiorRotulo = vetorKNN[k[2] - 1].rotulo;
+
+    // ocorrenciasRot = (int *)calloc(k[2]+1, sizeof(int));
+    
+    // for(int i = 0; i<=k[2]; i++){
+        
+    // }
+
+    
+
+    // free temporário (remover ao continuar o programa)
     free(k);
     free(coefMinkowski);
     free(tipoDistancia);
@@ -161,12 +216,11 @@ void main(){
     free(pathTeste);
     free(pathPredicoes);
 
-    
     free(matrizTreino);
     free(rotuloTreino);
     free(matrizTeste);
     free(rotuloTeste);
     free(matrizVizinhos);
-    free(vizinhoSord);
+    free(vetorKNN);
     puts("");
 }
