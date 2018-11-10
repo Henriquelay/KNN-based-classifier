@@ -54,7 +54,7 @@ void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *l
     *matrizAmostra  = matriz;
     *rotuloVet = rotulo;
 
-    rewind(arquivo);
+    fclose(arquivo);
 }
 
 int countLinhas(FILE *arquivo){
@@ -98,7 +98,8 @@ void tiraQuebra(char *string){
 }
 
 //pega os PATHs do config para vetores do programa
-void setupConfig(FILE *config, char **pathTreino, char **pathTeste, char **pathPredicao, int **k, char **tipoDistancia, float **coefMinkowski, int nLinhas){
+void setupConfig(FILE *config, char **pathTreino, char **pathTeste, char **pathPredicao, int **k, char **tipoDistancia, float **coefMinkowski, int *linhas){
+    int nLinhas = countLinhas(config);
     int sizeTreino = countChars(config, 1) +1;
     int sizeTeste = countChars(config, 2) +1;
     int sizePerdicao = countChars(config, 3) +1;
@@ -136,28 +137,30 @@ void setupConfig(FILE *config, char **pathTreino, char **pathTeste, char **pathP
     *k = kVet;
     *tipoDistancia = tipoDistanciaVet;
     *coefMinkowski = coefMinkowskiVet;
+    *linhas = nLinhas;
 
     fclose(config);
+
 }
 
-// MAIN PARA TESTES E DEBUG
-void main(){
-    FILE *treino = fopen("iris/dataset/iris_teste.csv", "r");
-    float **matrizTreino, *rotuloTreino;
-    int linhasTreino, colunasTreino;
+// // MAIN PARA TESTES E DEBUG
+// void main(){
+//     FILE *treino = fopen("iris/dataset/iris_teste.csv", "r");
+//     float **matrizTreino, *rotuloTreino;
+//     int linhasTreino, colunasTreino;
 
-    transcribe(treino, &matrizTreino, &rotuloTreino, &linhasTreino, &colunasTreino);
+//     transcribe(treino, &matrizTreino, &rotuloTreino, &linhasTreino, &colunasTreino);
     
-    for(int i = 0;  i < linhasTreino; i++){
-        for(int j = 0; j < colunasTreino; j++){
-            printf("%.2f ", matrizTreino[i][j]); 
-        }
-        printf("%.f\n", rotuloTreino[i]);
-    }
+//     for(int i = 0;  i < linhasTreino; i++){
+//         for(int j = 0; j < colunasTreino; j++){
+//             printf("%.2f ", matrizTreino[i][j]); 
+//         }
+//         printf("%.f\n", rotuloTreino[i]);
+//     }
 
-    free(matrizTreino);
-    // free(rotuloTreino);
-    fclose(treino);
+//     free(matrizTreino);
+//     // free(rotuloTreino);
+//     fclose(treino);
 
-}
+// }
 

@@ -1,71 +1,58 @@
-#include "distancias.h"
-#include "openfile.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "distancias.h"
+#include "openfile.h"
 
 void main(){
     FILE *config = fopen("iris/config.txt", "r");
-    int *k, linhasConfig = countLinhas(config);
+    int *k, linhasConfig;
     float *coefMinkowski;
     char *tipoDistancia;
     char *pathTreino, *pathTeste, *pathPredicoes;
 
-    setupConfig(config, &pathTreino, &pathTeste, &pathPredicoes, &k, &tipoDistancia, &coefMinkowski, linhasConfig);
+    setupConfig(config, &pathTreino, &pathTeste, &pathPredicoes, &k, &tipoDistancia, &coefMinkowski, &linhasConfig);
 
-    // puts("PATHS:");
-    // printf("%s\n", pathTreino);
-    // printf("%s\n", pathTeste);
-    // printf("%s\n", pathPredicoes);
+    puts("PATHS:");
+    printf("%s\n", pathTreino);
+    printf("%s\n", pathTeste);
+    printf("%s\n", pathPredicoes);
 
-    puts("VETORES:");
-    for(int i = 0; i < nLinhas - 3; i++){
-        printf("K[%i] = %i\t distancia[%i] = %c\t maicozosque[%i] = %f\n", i, k[i], i, tipoDistancia[i], i, coefMinkowski[i]);
-    }
     
-
-    //free temporário (remover ao continaur o programa)
-    // puts("\nCONFIGS:");
-    // for(int i = 0; i < linhasConfig - 3; i++){
-    //     printf("%d %c %.2f\n", k[i], tipoDistancia[i], coefMinkowski[i]);
-    // }
+    puts("\nCONFIGS:");
+    for(int i = 0; i < linhasConfig - 3; i++){
+        printf("%d %c %.2f\n", k[i], tipoDistancia[i], coefMinkowski[i]);
+    }
 
 
-    FILE *treino = fopen("iris/dataset/iris_treino.csv", "r");
+    FILE *treino = fopen(pathTreino, "r");
     float **matrizTreino, *rotuloTreino;
     int linhasTreino, colunasTreino;
 
-    textSize(treino, &colunasTreino, &linhasTreino);
-
-    rotuloTreino = (float *) malloc(linhasTreino * sizeof(float));
-    matrizTreino = (float **) malloc(linhasTreino * sizeof(float *));
-    for(int i = 0; i < linhasTreino; i++){
-        matrizTreino[i] = (float *) malloc(colunasTreino * sizeof(float));
+    if(treino == NULL){
+        printf("Arquivo de treino não existe!");
+        exit(1);
     }
     
-    transcribe(treino, matrizTreino, rotuloTreino, colunasTreino, linhasTreino);
+    transcribe(treino, &matrizTreino, &rotuloTreino, &linhasTreino, &colunasTreino);
 
-    // puts("\nTREINO:");
-    // printaMatriz(matrizTreino, rotuloTreino, colunasTreino, linhasTreino);
+    puts("\nTREINO:");
+    printaMatriz(matrizTreino, rotuloTreino, colunasTreino, linhasTreino);
 
-    FILE *teste = fopen("iris/dataset/iris_teste.csv", "r");
+    FILE *teste = fopen(pathTeste, "r");
     float **matrizTeste, *rotuloTeste;
-    int colunasTeste, linhasTeste; 
+    int linhasTeste, colunasTeste;
 
-    textSize(teste, &colunasTeste, &linhasTeste);
-
-    rotuloTeste = (float *) malloc(linhasTeste * sizeof(float));
-    matrizTeste = (float **) malloc(linhasTeste * sizeof(float *));
-    for(int i = 0; i < linhasTeste; i++){
-        matrizTeste[i] = (float *) malloc(colunasTeste * sizeof(float));
+    if(teste == NULL){
+        printf("Arquivo de treino não existe!");
+        exit(1);
     }
     
-    transcribe(teste, matrizTeste, rotuloTeste, colunasTeste, linhasTeste);
+    transcribe(teste, &matrizTeste, &rotuloTeste, &linhasTeste, &colunasTeste);
 
-    // puts("\nTESTE:");
-    // printaMatriz(matrizTeste, rotuloTeste, colunasTeste, linhasTeste);
+    puts("\nTESTE:");
+    printaMatriz(matrizTeste, rotuloTeste, colunasTeste, linhasTeste);
 
-
-    ///COMEÇO DO KNN
+    // ///COMEÇO DO KNN
 
     struct distRot{ 
         float dist;
@@ -81,7 +68,9 @@ void main(){
         vizinho[i] = (kneigh *) malloc(linhasTreino * sizeof(kneigh));
     }
 
-    // //CALCULO DE DISTÂNCIA (EUCLIDES PARA FACILITAR OS TESTES)
+    // void knnDist(kneigh ***vizinho, char tipoDist, float coefMinkowski, int linhasTreino, int colunasTreino, int linhasTeste, int colunasTeste);
+
+    // //CALCULO DE DISTÂNCIA
     for(int aTst = 0; aTst < linhasTeste; aTst++){
         for(int aTrn = 0; aTrn < linhasTreino; aTrn ++){
             switch(tipoDistancia[2]){
@@ -98,12 +87,13 @@ void main(){
         }
     }
 
-    // for(int i = 0;  i < linhasTeste; i++){
-    //     for(int j = 0; j < linhasTreino; j++){
-    //         printf("%f ", ((vizinho[i][j]).dist)); 
-    //     }
-    //     puts("");
-    // }
+
+    for(int j = 0; j < linhasTreino; j++){
+        for(int i = 0;  i < linhasTeste; i++){
+            printf("%f ", ((vizinho[i][j]).dist)); 
+        }
+        puts("");
+    }
 
     // free temporário (remover ao continaur o programa)
     free(k);
@@ -112,8 +102,6 @@ void main(){
     free(pathTreino);
     free(pathTeste);
     free(pathPredicoes);
-
-    puts("");
 
     
     free(matrizTreino);
