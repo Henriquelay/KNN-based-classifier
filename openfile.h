@@ -18,6 +18,7 @@ struct Tpaths{
 
 typedef struct Tpaths Tpaths;
 typedef struct Tamostra Tamostra;
+typedef struct kneigh kneigh;
 
 void textSize(FILE*, int*, int*);
 void printaMatriz(float**, float*, int, int);
