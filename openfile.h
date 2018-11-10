@@ -4,6 +4,18 @@
 /*Aqui vai as funcoes*/
 #include <stdio.h>
 
+struct Tamostra{
+    int k;
+    char tipoDistancia;
+    float coefMinkowski;
+};
+
+struct Tpaths{
+    char *pathTreino;
+    char *pathTeste;
+    char *pathPredicao;
+};
+
 typedef struct Tpaths Tpaths;
 typedef struct Tamostra Tamostra;
 
@@ -13,7 +25,8 @@ void transcribe(FILE*, float**, float*, int, int);
 int countLinhas(FILE*);
 int countChars(FILE*, int);
 void tiraQuebra(char*);
-void setupConfig(FILE*, char**, char**, char**, int**, char**, float**, int);
+Tpaths* setupPaths(FILE*);
+Tamostra* setupAmostras(FILE*, int);
 
 /*Endif para evitar warnings*/
 #endif

@@ -3,31 +3,6 @@
 #include <string.h>
 #include "openfile.h"
 
-struct Tamostra{
-    int k;
-    char tipoDistancia;
-    float coefMinkowski;
-};
-
-struct Tpaths{
-    char *pathTreino;
-    char *pathTeste;
-    char *pathPredicoes;
-};
-
-Tpaths* novoPaths(char* treino, char* teste, char* predicoes){
-    Tpaths* t = (Tpaths*) malloc(sizeof(Tpaths));
-    t->pathTreino = (char*) malloc(strlen(treino) + sizeof(char));
-    t->pathTeste = (char*) malloc(strlen(treino) + sizeof(char));
-    t->pathPredicao = (char*) malloc(strlen(treino) + sizeof(char));
-
-    strcpy(t->pathTreino, treino);
-    strcpy(t->pathTeste, teste);
-    strcpy(t->pathPredicoes, predicoes);
-
-    return t;
-}
-
 //conta colunas e linhas para carregar os arquivos de dados
 void textSize(FILE *arquivo, int *colunas, int *linhas){
     char *texto;
@@ -123,44 +98,52 @@ Tpaths* setupPaths(FILE *config){
     int sizePerdicao = countChars(config, 3) +1;
     //+1 para ter espaço para o \n e \0 da string a ser inserida
     
-    char *treinoTemp, *testeTemp, *predicaoTemp;
+    char treinoTemp[sizeTreino], testeTemp[sizeTeste], predicaoTemp[sizePerdicao];
 
     fgets(treinoTemp, sizeTreino, config);
     fgets(testeTemp, sizeTeste, config);
     fgets(predicaoTemp, sizePerdicao, config);
 
-    tiraQuebra(treinoTemp);
-    tiraQuebra(testeTemp);
-    tiraQuebra(predicaoTemp);
+    // tiraQuebra(treinoTemp);
+    // tiraQuebra(testeTemp);
+    // tiraQuebra(predicaoTemp);
 
-    Tpaths *t = novoPaths(treinoTemp, testeTemp, predicaoTemp);
+    strtok(treinoTemp, "\n");
+    strtok(testeTemp, "\n");
+    strtok(predicaoTemp, "\n");
+
+    Tpaths *t = (Tpaths*) malloc(sizeof(Tpaths));
+
+    t->pathTreino = (char*) malloc(strlen(treinoTemp) + sizeof(char));
+    t->pathTeste = (char*) malloc(strlen(testeTemp) + sizeof(char));
+    t->pathPredicao = (char*) malloc(strlen(predicaoTemp) + sizeof(char));
+
+    strcpy(t->pathTreino, treinoTemp);
+    strcpy(t->pathTeste, testeTemp);
+    strcpy(t->pathPredicao, predicaoTemp);
 
     return t;
 }
     //o ponteiro de STREAM está apontando para o início dos vetores de dados.
     //Final da leitura de PATHs
     //início da leitura dos vetores
-    int nAmostras = nLinhas - 3;    //pois as 3 primeiras são PATHs
 
-    int *kVet = (int*) calloc(nAmostras, sizeof(int));
-    char *tipoDistanciaVet = (char*) calloc(nAmostras, sizeof(char));
-    float *coefMinkowskiVet = (float*) calloc(nAmostras, sizeof(float));
+Tamostra* setupAmostras(FILE *config, int linhasVetores){
+    
+    Tamostra *amostras = (Tamostra*) calloc(linhasVetores, sizeof(Tamostra));
 
-
-    for(int i = 0; i < nAmostras; i++){
-        fscanf(config, "%d, %c", &kVet[i], &tipoDistanciaVet[i]);
-        if(tipoDistanciaVet[i] == 'M'){
-            fscanf(config, ", %f\n", &coefMinkowskiVet[i]);
+    for(int i = 0; i < linhasVetores; i++){
+        fscanf(config, "%d, %c", &(amostras[i]).k, &(amostras[i]).tipoDistancia);
+        if((amostras[i]).tipoDistancia == 'M'){
+            fscanf(config, ", %f\n", &(amostras[i]).coefMinkowski);
         }else{
             fgetc(config);
         }
     }
 
-    *k = kVet;
-    *tipoDistancia = tipoDistanciaVet;
-    *coefMinkowski = coefMinkowskiVet;
 
     fclose(config);
+    return amostras;
 }
 
 /* MAIN PARA TESTES E DEBUG
@@ -188,5 +171,4 @@ void main(){
     free(tipoDistancia);
     free(coepMinkowski);
 }
-
 */
