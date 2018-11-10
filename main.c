@@ -182,29 +182,39 @@ void main(){
 
     kneigh *vetorKNN;
 
-    takeKNN(matrizVizinhos[1], linhasTreino, k[2], &vetorKNN);
-
-    printf("\nK primeiros: ");
-    for(int i = 0; i<k[2]; i++){
-        printf("%f ", vetorKNN[i].rotulo);
-    }
-    puts("");
+    takeKNN(matrizVizinhos[4], linhasTreino, k[2], &vetorKNN);
 
     
 
     // CLASSIFICA A AMOSTRA
-    // int maioria = (k[2]/2) + 1;
-    // int *ocorrenciasRot;
+    int *ocorrenciasRot;
     
-    // insortVetorRotulo(vetorKNN, &vetorKNN, k[2]);
+    insortVetorRotulo(vetorKNN, &vetorKNN, k[2]);
     
-    // int maiorRotulo = vetorKNN[k[2] - 1].rotulo;
+    int maiorRotulo = vetorKNN[k[2] - 1].rotulo;
 
-    // ocorrenciasRot = (int *)calloc(k[2]+1, sizeof(int));
+    ocorrenciasRot = (int *)calloc(maiorRotulo+1, sizeof(int));
     
-    // for(int i = 0; i<=k[2]; i++){
-        
-    // }
+    for(int i = 0; i<k[2]; i++){
+        int rotuloAtual = vetorKNN[i].rotulo;
+        ocorrenciasRot[rotuloAtual]++;
+    }
+
+    int maiorOcor;
+    int rotuloMaior;
+    for(int i = 0; i<=maiorRotulo; i++){
+        if(i==0){
+            maiorOcor = ocorrenciasRot[i];
+            rotuloMaior = i;
+        }else{
+            if(ocorrenciasRot[i] > maiorOcor){
+                maiorOcor = ocorrenciasRot[i];
+                rotuloMaior = i;
+            }
+        }
+    }
+
+    printf("Rotulo: %d", rotuloMaior);
 
     
 
