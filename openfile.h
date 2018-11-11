@@ -31,11 +31,8 @@ int countLinhas(FILE*);
 int countChars(FILE*, int);
 void tiraQuebra(char*);
 Tpaths* setupPaths(FILE*);
-<<<<<<< HEAD
 Tamostra* setupAmostras(FILE*, int);
-=======
 void setupAmostra(FILE*, int, Tamostra**);
->>>>>>> 9e49fbf4aec3b61927efc018242660c9a10e48d5
 
 /*Endif para evitar warnings*/
 #endif

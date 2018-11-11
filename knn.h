@@ -18,5 +18,8 @@ struct Kneigh{
 
 typedef struct Kneigh Kneigh;
 typedef struct Data Data;
+
+void distancias(Kneigh***, char, float, Data, Data);
+
 /*Endif para evitar warnings*/
 #endif

@@ -3,63 +3,6 @@
 #include <string.h>
 #include "openfile.h"
 
-<<<<<<< HEAD
-=======
-struct Tamostra{
-    int k;
-    char tipoDistancia;
-    float coefMinkowski;
-};
-
-struct Tpaths{
-    char *pathTreino;
-    char *pathTeste;
-    char *pathPredicao;
-};
-
-Tpaths* novoPaths(char* treino, char* teste, char* predicoes){
-    Tpaths* t = (Tpaths*) malloc(sizeof(Tpaths));
-    t->pathTreino = (char*) malloc(strlen(treino) + sizeof(char));
-    t->pathTeste = (char*) malloc(strlen(treino) + sizeof(char));
-    t->pathPredicao = (char*) malloc(strlen(treino) + sizeof(char));
-
-    strcpy(t->pathTreino, treino);
-    strcpy(t->pathTeste, teste);
-    strcpy(t->pathPredicao, predicoes);
-
-    free(treino);
-    free(teste);
-    free(predicoes);
-
-    return t;
-}
-
-char* returnPath(Tpaths path, int x){
-    switch(x){
-        case 1: 
-            return path.pathTreino;
-        case 2: 
-            return path.pathTeste;
-        case 3: 
-            return path.pathPredicao;        
-    }
-    return NULL;
-}
-
-void printerAmostras(Tamostras *amostra){
-        printf("K = %i\tTipoDistancia = %c\tCoefMinkowski = %f\n", amostra->k, amostra->tipoDistancia, amostra->coefMinkowski);
-}
-
-Tamostra* novaAmostra(int k, char tipoDistancia, float coefMinkowski){
-    Tamostra* t = (Tamostra*) malloc(sizeof(Tamostra));
-
-    t->k = k;
-    t->tipoDistancia = tipoDistancia;
-    t->coefMinkowski = coefMinkowski;
-    return t;
-}
-
->>>>>>> 9e49fbf4aec3b61927efc018242660c9a10e48d5
 //conta colunas e linhas para carregar os arquivos de dados
 void textSize(FILE *arquivo, int *colunas, int *linhas){
     char *texto;
