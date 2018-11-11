@@ -3,12 +3,11 @@
 CC=gcc
 # liga algumas flags de warn, mas não todas
 CFLAGS=-Wall -g
-OBJ= distancias.o filemanager.o main.o knn.o
+OBJ= src/distancias.o src/filemanager.o src/knn.o main.o
 EXEC= distancias filemanager knn
 
 all: main
-	-rm *.o
-	-rm *.txt
+	-rm ${OBJ}
 
 main: ${OBJ}
 	$ ${CC} -o main ${OBJ} -lm ${CFLAGS}
@@ -17,20 +16,17 @@ main.o: main.c
 	$ ${CC} -c main.c ${CFLAGS}
 
 distancias.o: distancias.c
-	$ ${CC} -c distancias.c ${CFLAGS}
+	$ ${CC} -c src/distancias.c ${CFLAGS}
 
 filemanager.o: filemanager.c
-	$ ${CC} -c filemanager.c ${CFLAGS}
+	$ ${CC} -c src/filemanager.c ${CFLAGS}
 
 knn.o: knn.c
-	$ ${CC} -c knn.c ${CFLAGS}
+	$ ${CC} -c src/knn.c ${CFLAGS}
 
 clean:
-	-rm *.o
-	-rm distancias
-	-rm filemanager
-	-rm knn
-	-rm main
+	-rm ${OBJ}
+	-rm ${EXEC}
 
 run:
 	$ make

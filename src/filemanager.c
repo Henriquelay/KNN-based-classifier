@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "filemanager.h"
+#include "../headers/filemanager.h"
 
 void printMatrizFile(FILE *arq ,int size, int **matriz){
     fprintf(arq, "\n");

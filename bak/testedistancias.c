@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "distancias.h"
 
 //main para teste
 void main(){

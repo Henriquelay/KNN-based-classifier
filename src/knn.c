@@ -1,7 +1,7 @@
 #include <stdlib.h>
-#include "knn.h"
-#include "distancias.h"
-#include "filemanager.h"
+#include "../headers/knn.h"
+#include "../headers/distancias.h"
+#include "../headers/filemanager.h"
 
 void knnDist(Kneigh ***MatrizNeighs, Data treino, Data teste, Tamostra amostra){
 

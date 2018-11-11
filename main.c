@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "distancias.h"
-#include "filemanager.h"
-#include <string.h>
-#include "knn.h"
+#include "headers/distancias.h"
+#include "headers/filemanager.h"
+#include "headers/knn.h"
 
 
 int main(int argc, char *argv[]){
@@ -82,6 +81,8 @@ int main(int argc, char *argv[]){
 
         printVetorFile(arq, teste.nlinhas, vetorClassificados);
         fclose(arq);
+        for(int i = 0; i < maiorRotulo; i++)
+            free(matrizConfusa[i]); 
         free(matrizConfusa);
         free(vetorClassificados);
         free(indice);
@@ -92,10 +93,6 @@ int main(int argc, char *argv[]){
     free(paths->pathTeste);
     free(paths->pathPredicao);
     free(paths);
-    free(amostras);
-    for(int i = 0; i < maiorRotulo; i++)
-        free(matrizConfusa[i]);
-    free(matrizConfusa);
     for(int i = 0; i < treino.nlinhas; i++)
         free(treino.matriz[i]);
     free(treino.matriz);
