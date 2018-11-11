@@ -3,8 +3,8 @@
 #include "filemanager.h"
 #include "knn.h"
 
-int main(void){
-     FILE *config = fopen("iris/config.txt", "r");
+int main(int argc, char *argv[]){
+    FILE *config = fopen(argv[1], "r");
     if(config == NULL){
         printf("Arquivo de config não existe! Finalizando...\n");
         exit(1);
@@ -43,7 +43,7 @@ int main(void){
     float *vetorClassificados;
     float maiorRotulo;
 
-    int c = 0;
+    int c = 2;
     knn(&vetorClassificados, &maiorRotulo, treino, teste, amostras[c]);
     
     int **matrizConfusa;
