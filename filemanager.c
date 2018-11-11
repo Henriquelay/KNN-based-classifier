@@ -2,6 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 
+void printMatrizFile(FILE *arq ,int size, int **matriz){
+    fprintf(arq, "\n");
+    for(int i = 0; i<size; i++){ //PRINTA A MATRIZ DE CONFUSÃO
+        for(int j = 0; j<size; j++){
+            fprintf(arq, "%d ", matriz[i][j]);
+        }
+        fprintf(arq, "\n");
+    }
+    fprintf(arq, "\n");
+}
+
+void printVetorFile(FILE *arq, int size, float *vet){
+    for(int i = 0; i<size; i++){ //PRINTA AS PREDIÇÕES
+        fprintf(arq, "%.f\n", vet[i]);
+    }
+}
 
 //debug apenas. mostra os vetores dos arquivos de dados
 void printaMatriz(float **matriz, float *iD, int nColunas, int nLinhas){
@@ -145,22 +161,20 @@ void setupConfig(FILE *config, char **pathTreino, char **pathTeste, char **pathP
 
 // // MAIN PARA TESTES E DEBUG
 // void main(){
-//     FILE *treino = fopen("iris/dataset/iris_teste.csv", "r");
-//     float **matrizTreino, *rotuloTreino;
-//     int linhasTreino, colunasTreino;
+//     FILE* saida = fopen("saida.txt", "w");
 
-//     transcribe(treino, &matrizTreino, &rotuloTreino, &linhasTreino, &colunasTreino);
-    
-//     for(int i = 0;  i < linhasTreino; i++){
-//         for(int j = 0; j < colunasTreino; j++){
-//             printf("%.2f ", matrizTreino[i][j]); 
+//     int maiorRotulo=5;
+
+//     int matrizConfusa[(int)maiorRotulo+1][(int)maiorRotulo+1];
+
+//     for(int i = 0; i<=maiorRotulo; i++){
+//         for(int j = 0; j<=maiorRotulo; j++){
+//             matrizConfusa[i][j] = 0;
 //         }
-//         printf("%.f\n", rotuloTreino[i]);
 //     }
 
-//     free(matrizTreino);
-//     // free(rotuloTreino);
-//     fclose(treino);
+//     printMatrizFile(saida,maiorRotulo+1, matrizConfusa);
+    
 
 // }
 

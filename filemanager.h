@@ -1,10 +1,12 @@
-/* HEADER PARA A BIBLIOTECA OPENFILE */
-#ifndef _H_OPENFILE
-#define _H_OPENFILE
+/* HEADER PARA A BIBLIOTECA FILEMANAGER */
+#ifndef _H_FILEMANAGER
+#define _H_FILEMANAGER
 /*Aqui vai as funcoes*/
 #include <stdio.h>
 
-void textSize(FILE*, int*, int*);
+
+void printMatrizFile(FILE*, int, int**);
+void printVetorFile(FILE*, int, float*);
 void printaMatriz(float**, float*, int, int);
 void transcribe(FILE*, float***, float**, int*, int*);
 int countLinhas(FILE*);
