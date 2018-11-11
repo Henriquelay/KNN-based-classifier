@@ -51,17 +51,17 @@ int main(int argc, char *argv[]){
         matrizConfusa = (int**) calloc(maiorRotulo+1, sizeof(int *));
 
         for(int i = 0; i <= maiorRotulo; i++){
-            matrizConfusa[i] = (int *) calloc(maiorRotulo+1, sizeof(int));
+            matrizConfusa[i] = (int*) calloc(maiorRotulo+1, sizeof(int));
         }
 
         int acertos = 0;
         for(int i = 0; i < teste.nlinhas; i++){
             if(vetorClassificados[i] == teste.rotulo[i])
                 acertos++;
-            matrizConfusa[(int)teste.rotulo[i]][(int)vetorClassificados[i]]++;
+            matrizConfusa[(int) teste.rotulo[i]][(int) vetorClassificados[i]]++;
         }
 
-        float acc = (float)acertos / (float)teste.nlinhas;
+        float acc = (float) acertos / (float) teste.nlinhas;
 
 
         //conta quantos caracteres o maior numero de saída terá
@@ -91,6 +91,8 @@ int main(int argc, char *argv[]){
         free(saida);
     }
 
+    printf("===Sucesso!===\nAs predicoes estao em ./%s\n", paths->pathPredicao);
+
     free(amostras);
     free(paths->pathTreino);
     free(paths->pathTeste);
@@ -105,6 +107,5 @@ int main(int argc, char *argv[]){
     free(teste.matriz);
     free(teste.rotulo);
 
-    printf("===Sucesso!===\n");
     return 0;
 }
