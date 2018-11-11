@@ -71,7 +71,7 @@ int main(int argc, char *argv[]){
             nDigitos++;
         }
         
-        char* saida = (char*) calloc(nDigitos, sizeof(char) + strlen(paths->pathPredicao) + 13);
+        char* saida = (char*) calloc(nDigitos + strlen(paths->pathPredicao) + 13, sizeof(char));
         //+9 pelo "predicao_", +3 pelo ".txt", +1 pelo '\0'
         
         sprintf(saida, "%s%s%i%s", paths->pathPredicao ,"predicao_", c+1, ".txt");
