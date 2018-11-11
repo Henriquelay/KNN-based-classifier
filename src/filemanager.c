@@ -5,8 +5,8 @@
 
 void printMatrizFile(FILE *arq ,int size, int **matriz){
     fprintf(arq, "\n");
-    for(int i = 0; i<size; i++){ //PRINTA A MATRIZ DE CONFUSÃO
-        for(int j = 0; j<size; j++){
+    for(int i = 0; i < size; i++){ //PRINTA A MATRIZ DE CONFUSÃO
+        for(int j = 0; j < size; j++){
             fprintf(arq, "%d ", matriz[i][j]);
         }
         fprintf(arq, "\n");
@@ -47,13 +47,13 @@ void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *l
     }
     rewind(arquivo);
 
-    matriz = (float **) calloc(1, sizeof(float *));
-    rotulo = (float *) calloc(1, sizeof(float));
+    matriz = (float**) calloc(1, sizeof(float*));
+    rotulo = (float*) calloc(1, sizeof(float));
 
     for(int i = 1; !feof(arquivo); i++){
         l++;
-        rotulo = (float *) realloc(rotulo, (i)*sizeof(float));
-        matriz = (float **) realloc(matriz, (i)*sizeof(float *));
+        rotulo = (float*) realloc(rotulo, (i)*sizeof(float));
+        matriz = (float**) realloc(matriz, (i)*sizeof(float*));
         
         matriz[i-1] = (float *) calloc(c, sizeof(float));
         for(int j = 0; j<c; j++){

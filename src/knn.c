@@ -7,7 +7,7 @@ void knnDist(Kneigh ***MatrizNeighs, Data treino, Data teste, Tamostra amostra){
 
     Kneigh **vizinho;
 
-    vizinho = (Kneigh **) malloc(teste.nlinhas * sizeof(Kneigh*));
+    vizinho = (Kneigh**) malloc(teste.nlinhas * sizeof(Kneigh*));
     for(int i = 0; i < teste.nlinhas; i++){
         vizinho[i] = (Kneigh *) malloc(treino.nlinhas * sizeof(Kneigh));
     }
@@ -38,21 +38,21 @@ void insortVetor(Kneigh *vetor, Kneigh **vizinhoSord, int sizeVetor){
     int n = 0;
 
     Kneigh *sorted;
-    sorted = (Kneigh *) malloc(sizeof(Kneigh));
+    sorted = (Kneigh*) malloc(sizeof(Kneigh));
 
-    for(int i = 0; i<sizeVetor; i++){
+    for(int i = 0; i < sizeVetor; i++){
         if(n == 0){ //SE FOR O PRIMEIRO ELEMENTO, COLOCA NO INÍCIO DO VETOR
             sorted[n] = vetor[i];
             n++;            
         }else if (vetor[i].dist >= sorted[n-1].dist){ //SE FOR MAIOR, COLOCA NO FINAL DO VETOR
-            sorted = (Kneigh *) realloc(sorted, (n+1) * sizeof(Kneigh));
+            sorted = (Kneigh*) realloc(sorted, (n+1) * sizeof(Kneigh));
             sorted[n] = vetor[i];
             n++;            
         }else{
-            for(int c = 0; c<n; c++){
+            for(int c = 0; c < n; c++){
                 if(vetor[i].dist <= sorted[c].dist){//cOMPARA COM OS ELEMENTOS JÁ ORDENADOS 
-                    sorted = (Kneigh *) realloc(sorted, (n+1) * sizeof(Kneigh));
-                    for(int z = n; z >c; z--){//SE FOR MENOR, CHEGA OS ELEMENTOS MAIORES PARA FRENTE
+                    sorted = (Kneigh*) realloc(sorted, (n+1) * sizeof(Kneigh));
+                    for(int z = n; z > c; z--){//SE FOR MENOR, CHEGA OS ELEMENTOS MAIORES PARA FRENTE
                         sorted[z] = sorted[z-1];//COLOCA NA POSIÇÃO z
                     }
                     sorted[c] = vetor[i];
@@ -72,7 +72,7 @@ void takeKNN(Kneigh *vetorAmostra, int sizeVetor, int k, Kneigh **knnVetor){
 
     insortVetor(vetorAmostra, &vizinhoSord, sizeVetor);
 
-    vizinhoSord = (Kneigh *) realloc(vizinhoSord, k * sizeof(Kneigh)); 
+    vizinhoSord = (Kneigh*) realloc(vizinhoSord, k * sizeof(Kneigh)); 
 
 
     *knnVetor = vizinhoSord;
@@ -102,7 +102,7 @@ float classifica(Kneigh *vetorKelem, int k, float maiorRotulo){
 
     //CRIA UM VETOR DE NÚMERO DE OCORRÊNCIAS
     //ONDE CADA ÍNDICE CORRESPONDE A UM RÓTULO
-    ocorrenciasRot = (int *)calloc(maiorRotulo+1, sizeof(int));
+    ocorrenciasRot = (int*) calloc(maiorRotulo+1, sizeof(int));
     
     for(int i = 0; i < k; i++){
         int rotuloAtual = vetorKelem[i].rotulo;
@@ -140,7 +140,7 @@ void knn(float **classVet, float *maxRotulo, Data treino, Data teste, Tamostra a
 
     float *amostrasClass;
 
-    amostrasClass = (float *) malloc(teste.nlinhas * sizeof(float));
+    amostrasClass = (float*) malloc(teste.nlinhas * sizeof(float));
 
     float maiorRotulo = maxElem(treino.rotulo, treino.nlinhas);
 

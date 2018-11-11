@@ -5,6 +5,7 @@ CC=gcc
 CFLAGS=-Wall -g
 OBJ= src/distancias.o src/filemanager.o src/knn.o main.o
 EXEC= distancias filemanager knn
+PREDIC= data/iris/predicoes data/vowels/predicoes
 
 all: main
 	-rm ${OBJ}
@@ -27,7 +28,9 @@ knn.o: knn.c
 clean:
 	-rm ${OBJ}
 	-rm ${EXEC}
-
+	-rm ${PREDIC}
+	-rm main
+	
 run:
 	$ make
 	$ ./main ${ARG}

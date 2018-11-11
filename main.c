@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
         knn(&vetorClassificados, &maiorRotulo, treino, teste, amostras[c]);
         
         int **matrizConfusa;
-        matrizConfusa = (int **) calloc(maiorRotulo+1, sizeof(int *));
+        matrizConfusa = (int**) calloc(maiorRotulo+1, sizeof(int *));
 
         for(int i = 0; i <= maiorRotulo; i++){
             matrizConfusa[i] = (int *) calloc(maiorRotulo+1, sizeof(int));
@@ -76,7 +76,7 @@ int main(int argc, char *argv[]){
         
         sprintf(saida, "%s%s%i%s", paths->pathPredicao ,"predicao_", c+1, ".txt");
 
-        FILE* arq = fopen(saida, "w");
+        FILE *arq = fopen(saida, "w");
 
         fprintf(arq, "%.2f\n", acc); //PRINTA ACCURACY
 
