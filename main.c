@@ -23,7 +23,7 @@ int main(void){
         exit(1);
     }
     
-    transcribe(treinoFile, treino.matriz, treino.rotulo, treino.nlinhas, treino.ncolunas);
+    transcribe(treinoFile, &treino.matriz, &treino.rotulo, &treino.nlinhas, &treino.ncolunas);
 
     // puts("\nTREINO:");
     // printaMatriz(matrizTreino, rotuloTreino, colunasTreino, linhasTreino);
@@ -36,7 +36,7 @@ int main(void){
         exit(1);
     }
     
-    transcribe(testeFile, teste.matriz, teste.rotulo, teste.nlinhas, teste.ncolunas);
+    transcribe(testeFile, &teste.matriz, &teste.rotulo, &teste.nlinhas, &teste.ncolunas);
 
     // puts("\nTESTE:");
     // printaMatriz(matrizTeste, rotuloTeste, colunasTeste, linhasTeste);
