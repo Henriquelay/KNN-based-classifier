@@ -34,24 +34,6 @@ float euclidesVetor(float* vetorTarget, int tamTarget, float* vetorTraining, int
     return resultado;
 }
 
-//implementa um vetor de euclidesVetor
-float* euclidesMatrix(float** matrizTarget, int tamTargetRow, int tamTargetCol, float** matrizTraining, int tamTrainingRow, int tamTrainingCol){
-    float* resultado = (float*) malloc(tamTrainingRow * sizeof(float));
-
-    /*analizar se esse IF é de fato necessário 
-    (se entradas de linhas diferentes devem ser processadas, e se sim, de que forma)*/
-    if(tamTargetRow != tamTrainingRow){
-        printf("\n\n\tFUDEU GERAL, O ARGUMENTO TEM NUMERO DE LINHAS DIFERENTE DO TREINAMENT0\n");
-        return NULL;    //TODO: dar os frees antes de encerrar
-    }
-
-    for(int i = 0; i < tamTargetRow; i++)
-        resultado[i] = euclidesVetor(matrizTarget[i], tamTargetCol, matrizTraining[i], tamTargetRow);
-
-    return resultado;
-}
-
-
 //Início do bloco Minkowski
 float minkowski(float featureTarget, float featureTraining, float r){
     float resultado = pow(abs(featureTarget - featureTraining), r);
@@ -76,23 +58,6 @@ float minkowskiVetor(float* vetorTarget, int tamTarget, float* vetorTraining, in
     return resultado;
 }
 
-//implementa um vetor de minkowskiVetor
-float* minkowskiMatrix(float** matrizTarget, int tamTargetRow,int tamTargetCol, float** matrizTraining, int tamTrainingRow, int tamTrainingCol, float r){
-    float* resultado = (float*) malloc(tamTargetRow * sizeof(float));
-
-    /*analizar se esse IF é de fato necessário 
-    (se entradas de linhas diferentes devem ser processadas, e se sim, de que forma)*/
-    if(tamTargetRow != tamTrainingRow){
-        printf("\n\n\tFUDEU GERAL, O ARGUMENTO TEM NUMERO DE LINHAS DIFERENTE DO TREINAMENT0\n");
-        return NULL;    //TODO: dar os frees antes de encerrar
-    }
-
-    for(int i = 0; i < tamTargetRow; i++)
-        resultado[i] = minkowskiVetor(matrizTarget[i], tamTargetCol, matrizTraining[i],tamTrainingCol, r);
-
-return resultado;
-}
-
 // distrnacia de Chebysshev aplicada em um vetor
 float chebyshevVetor(float* vetorTarget, int tamTarget, float* vetorTraining, int tamTraining){
     float max = -1, atual;
@@ -104,27 +69,3 @@ float chebyshevVetor(float* vetorTarget, int tamTarget, float* vetorTraining, in
     
     return max;
 }
-
-
-
-/* //Dependencia para a similaridadeCosseno
-float produtoInterno(float* vetorA, int tamVetorA, float* vetorB, int tamVetorB){
-    int i;
-    float resultado = 0;
-    
-    if(tamVetorA != tamVetorB){
-        printf("\n\n\tFUDEU GERAL, ESSES VETORES NÃO TEM PRODUTO INTERNO (TAMANHOS DIFERENTES!!)");
-        return -1;
-    }
-
-    for(i = 0; i < tamVetorA; i++)
-        resultado += vetorA[i] * vetorB[i];
-
-    return resultado;
-}
-
-//Início do bloco similaridade de cosseno
-float similaridadeCosseno(float* vetorTarget, int tamVetorTarget, float* vetorTraining, int TamVetorTraining){
-    float resultado = produtoInterno(vetorTarget, tamVetorTarget, vetorTraining, TamVetorTraining) / euclidesVetor(vetorTarget, tamVetorTarget, vetorTraining, TamVetorTraining);
-    return resultado;
-} */

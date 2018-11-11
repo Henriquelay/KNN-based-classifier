@@ -8,6 +8,7 @@ EXEC= distancias filemanager knn
 
 all: main
 	-rm *.o
+	-rm *.txt
 
 main: ${OBJ}
 	$ ${CC} -o main ${OBJ} -lm ${CFLAGS}
@@ -33,7 +34,7 @@ clean:
 
 run:
 	$ make
-	$ ./main
+	$ ./main ${ARG}
 
 val: main
-	$ valgrind ./main
+	$ valgrind ./main ${ARG}
