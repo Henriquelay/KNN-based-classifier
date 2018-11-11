@@ -63,15 +63,18 @@ int main(int argc, char *argv[]){
 
         float acc = (float)acertos / (float)teste.nlinhas;
 
-        char *indice;
-        indice = (char *) malloc(nLinhasVetores * sizeof(char));
-        sprintf(indice, "%d", c+1);
-        indice = (char *) realloc(indice, strlen(indice) * sizeof(char));
-        
-        char saida[60] = "predicao_";
 
-        strcat(saida, indice);
-        strcat(saida, ".txt");
+        //conta quantos caracteres o maior numero de saída terá
+        int nDigitos = 1, nLinhasVetoresTemp = nLinhasVetores;
+        while(nLinhasVetoresTemp > 9){
+            nLinhasVetoresTemp = nLinhasVetoresTemp % 10;
+            nDigitos++;
+        }
+        
+        char* saida = (char*) calloc(nDigitos, sizeof(char) + 13);
+        //+9 pelo "predicao_", +3 pelo ".txt", +1 pelo '\0'
+        
+        sprintf(saida, "%s%i%s", "predicao_", c+1, ".txt");
 
         FILE* arq = fopen(saida, "w");
 
@@ -85,7 +88,7 @@ int main(int argc, char *argv[]){
             free(matrizConfusa[i]); 
         free(matrizConfusa);
         free(vetorClassificados);
-        free(indice);
+        free(saida);
     }
 
     free(amostras);

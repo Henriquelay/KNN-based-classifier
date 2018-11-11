@@ -61,7 +61,7 @@ void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *l
         }
         fscanf(arquivo, "%f%c", &rotulo[i-1], &junkChar);
     }
-    l--; //Os arquivos de teste e treino possui uma linha em branco no final do arquivo
+    l--; //Os arquivos de teste e treino possuem uma linha em branco no final do arquivo
     matriz = (float **) realloc(matriz, l*sizeof(float *));
     
     *linhas = l;

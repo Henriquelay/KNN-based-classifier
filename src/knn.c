@@ -125,7 +125,7 @@ float classifica(Kneigh *vetorKelem, int k, float maiorRotulo){
     }
 
     return rotuloDef;
-
+    free(ocorrenciasRot);
 }
 
 //CLASSIFICA UMA MATRIZ DE AMOSTRAS

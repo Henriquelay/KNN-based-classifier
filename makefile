@@ -33,4 +33,4 @@ run:
 	$ ./main ${ARG}
 
 val: main
-	$ valgrind ./main ${ARG}
+	$ valgrind -v --leak-check=full ./main ${ARG}
