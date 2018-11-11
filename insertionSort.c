@@ -9,8 +9,6 @@ for(int i = 0; i<n; i++){
 puts("}");
 }
 
-void insertionSort(float )
-
 void main(){
     int vetor[10] = {5,2,3,7,6,9,1,10,45,12};
     int *sort;
