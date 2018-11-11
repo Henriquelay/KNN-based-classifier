@@ -3,6 +3,7 @@
 #define _H_KNN
 /*Aqui vai as funcoes*/
 #include <stdio.h>
+#include "filemanager.h"
 
 struct Data{
         float** matriz;
@@ -19,7 +20,13 @@ struct Kneigh{
 typedef struct Kneigh Kneigh;
 typedef struct Data Data;
 
-void distancias(Kneigh***, char, float, Data, Data);
+void knnDist(Kneigh***, Data, Data, Tamostra);
+void insortVetor(Kneigh*, Kneigh**, int);
+void takeKNN(Kneigh*, int, int, Kneigh**);
+float maxElem(float*, int);
+float classifica(Kneigh*, int, float);
+void knn(float**, float*, Data, Data, Tamostra);
+
 
 /*Endif para evitar warnings*/
 #endif

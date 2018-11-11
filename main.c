@@ -1,160 +1,12 @@
 #include <stdlib.h>
 #include "distancias.h"
-#include "openfile.h"
+#include "filemanager.h"
 #include "knn.h"
-
-void insortVetor(kneigh *vetor, kneigh **vizinhoSord, int sizeVetor){
-    int n = 0;
-
-    kneigh *sorted;
-    sorted = (kneigh *) malloc(sizeof(kneigh));
-
-    for(int i = 0; i<sizeVetor; i++){
-        if(n == 0){
-            sorted[n] = vetor[i];
-            n++;            
-        }else if (vetor[i].dist >= sorted[n-1].dist){
-            sorted = (kneigh *) realloc(sorted, (n+1) * sizeof(kneigh));
-            sorted[n] = vetor[i];
-            n++;            
-        }else{
-            for(int c = 0; c<n; c++){
-                if(vetor[i].dist <= sorted[c].dist){
-                    sorted = (kneigh *) realloc(sorted, (n+1) * sizeof(kneigh));
-                    for(int z = n; z>c; z--){
-                        sorted[z] = sorted[z-1];
-                    }
-                    sorted[c] = vetor[i];
-                    n++;
-                    break;
-                }
-            }
-        }
-    }
-
-    *vizinhoSord = sorted;
-}
-
-void insortvetorKelem(kneigh *vetor, kneigh **vizinhoSord, int sizeVetor){
-    int n = 0;
-
-    kneigh *sorted;
-    sorted = (kneigh *) malloc(sizeof(kneigh));
-
-    for(int i = 0; i<sizeVetor; i++){
-        if(n == 0){
-            sorted[n] = vetor[i];
-            n++;            
-        }else if (vetor[i].rotulo >= sorted[n-1].rotulo){
-            sorted = (kneigh *) realloc(sorted, (n+1) * sizeof(kneigh));
-            sorted[n] = vetor[i];
-            n++;            
-        }else{
-            for(int c = 0; c<n; c++){
-                if(vetor[i].dist <= sorted[c].rotulo){
-                    sorted = (kneigh *) realloc(sorted, (n+1) * sizeof(kneigh));
-                    for(int z = n; z>c; z--){
-                        sorted[z] = sorted[z-1];
-                    }
-                    sorted[c] = vetor[i];
-                    n++;
-                    break;
-                }
-            }
-        }
-    }
-
-    *vizinhoSord = sorted;
-}
-
-void takeKNN(kneigh *vetorAmostra, int sizeVetor, int k, kneigh **knnVetor){
-    kneigh *vizinhoSord;
-
-    insortVetor(vetorAmostra, &vizinhoSord, sizeVetor);
-
-    vizinhoSord = (kneigh *) realloc(vizinhoSord, k * sizeof(kneigh));
-
-    *knnVetor = vizinhoSord;
-}
-
-float classifica(kneigh *vetorKelem, int k){
-    int *ocorrenciasRot;
-    
-    insortvetorKelem(vetorKelem, &vetorKelem, k);
-    
-    int maiorRotulo = vetorKelem[k - 1].rotulo;
-
-    ocorrenciasRot = (int *)calloc(maiorRotulo+1, sizeof(int));
-    
-    for(int i = 0; i<k; i++){
-        int rotuloAtual = vetorKelem[i].rotulo;
-        ocorrenciasRot[rotuloAtual]++;
-    }
-
-    int maiorOcor;
-    float rotuloDef;
-    for(int i = 0; i<=maiorRotulo; i++){
-        if(i==0){
-            maiorOcor = ocorrenciasRot[i];
-            rotuloDef = i;
-        }else{
-            if(ocorrenciasRot[i] > maiorOcor){
-                maiorOcor = ocorrenciasRot[i];
-                rotuloDef = i;
-            }
-        }
-    }
-
-    return rotuloDef;
-
-}
-
-
-
-
-void knn(float **Class, float **matrizTreino, float *rotuloTreino, float **matrizTeste, float *rotuloTeste, char *tipoDist, 
-        int *k, float *coefMinkowski, int linhasTreino, int colunasTreino, int linhasTeste, int colunasTeste){
-        
-        //CALCULANDO AS DISTÂNCIAS
-
-    int c = 0; //SELECIONA A CONFIGURAÇÃO
-
-    kneigh **matrizVizinhos;
-    knnDist(&matrizVizinhos, matrizTreino, rotuloTreino, matrizTeste, tipoDist[c], coefMinkowski[c], linhasTreino, colunasTreino, linhasTeste, colunasTeste);
-
-    //CLASSIFICANDO TODAS AS AMOSTRAS
-
-    float *amostrasClass;
-
-    amostrasClass = (float *) malloc(linhasTeste * sizeof(float));
-
-    for(int i = 0; i<linhasTeste; i++){
-        //PEGANDO OS K PRIMEIROS
-        kneigh *vetorKNN;
-
-        takeKNN(matrizVizinhos[i], linhasTreino, k[c], &vetorKNN);
-
-        // CLASSIFICA A AMOSTRA
-
-        float rotulo = classifica(vetorKNN, k[c]);
-
-        amostrasClass[i] = rotulo;        
-        free(vetorKNN);
-    }
-
-    printf("CLASSIFICAÇÃO ROTULO REAL\n");
-    for(int i = 0; i<linhasTeste; i++){
-        printf("     %.f          %.f\n", amostrasClass[i], rotuloTeste[i]);
-    }
-
-    free(matrizVizinhos);
-}
-
 
 int main(void){
      FILE *config = fopen("iris/config.txt", "r");
     if(config == NULL){
-        printf("Arquivo de config não existe!");
+        printf("Arquivo de config não existe! Finalizando...\n");
         exit(1);
     }
     int nLinhas = countLinhas(config);
@@ -167,7 +19,7 @@ int main(void){
     Data treino;
 
     if(treinoFile == NULL){
-        printf("Arquivo de treino não existe!");
+        printf("Arquivo de treino não existe! Finalizando...\n");
         exit(1);
     }
     
@@ -180,29 +32,49 @@ int main(void){
     Data teste;
 
     if(testeFile == NULL){
-        printf("Arquivo de treino não existe!");
+        printf("Arquivo de treino não existe! Finalizando...\n");
         exit(1);
     }
     
     transcribe(testeFile, &teste.matriz, &teste.rotulo, &teste.nlinhas, &teste.ncolunas);
 
-    // puts("\nTESTE:");
-    // printaMatriz(matrizTeste, rotuloTeste, colunasTeste, linhasTeste);
+   
 
-    //COMEÇO DO KNN
+    float *vetorClassificados;
+    float maiorRotulo;
 
-    Kneigh **matrizVizinhos;
+    int c = 0;
+    knn(&vetorClassificados, &maiorRotulo, treino, teste, amostras[c]);
+    
+    int **matrizConfusa;
+    matrizConfusa = (int **) calloc(maiorRotulo+1, sizeof(int *));
 
-    distancias(&matrizVizinhos, amostras[2].tipoDistancia, amostras[2].coefMinkowski, treino, teste);
-
-    for(int j = 0; j < treino.nlinhas; j++){
-        for(int i = 0;  i < teste.nlinhas; i++){
-            printf("%.f ", (matrizVizinhos[i][j].dist)); 
-        }
-        puts("");
+    for(int i = 0; i <= maiorRotulo; i++){
+        matrizConfusa[i] = (int *) calloc(maiorRotulo+1, sizeof(int));
     }
 
+    int acertos = 0;
+    for(int i = 0; i < teste.nlinhas; i++){
+        if(vetorClassificados[i] == teste.rotulo[i])
+            acertos++;
+        matrizConfusa[(int)teste.rotulo[i]][(int)vetorClassificados[i]]++;
+    }
 
+    float acc = (float)acertos / (float)teste.nlinhas;
+
+    
+
+    FILE* arq = fopen("saida.txt", "w");
+
+
+    fprintf(arq, "%.2f\n", acc); //PRINTA ACURACY
+
+    printMatrizFile(arq, (int)maiorRotulo+1, matrizConfusa);
+
+    printVetorFile(arq, teste.nlinhas, vetorClassificados);
+
+    fclose(arq);
+    free(matrizConfusa);
     free(amostras);
     free(paths->pathTreino);
     free(paths->pathTeste);
@@ -213,7 +85,8 @@ int main(void){
     free(treino.rotulo);
     free(teste.matriz);
     free(teste.rotulo);
-    free(matrizVizinhos);
+    // free(matrizVizinhos);
+    free(vetorClassificados);
     puts("");
 
     return 0;
