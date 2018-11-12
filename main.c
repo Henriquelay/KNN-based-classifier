@@ -9,7 +9,7 @@
 void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados, int  ***matrizConfusa, char **jordana, float *maiorRotulo, int *nlinhas){
 
         sprintf(*jordana, "%s%s%i%s", *pathPredicao ,"predicao_", *c + 1, ".txt");
-        printf("%s\n", *jordana);
+        printf(">Arquivo de saída: %s\n", *jordana);
 
         FILE *predicao = fopen(*jordana, "w");
 
@@ -101,6 +101,7 @@ int main(int argc, char *argv[]){
         float acc = (float) acertos / (float) teste.nlinhas;
  
         output(&(paths->pathPredicao), &c, &acc, &vetorClassificados, &matrizConfusa, &jordana, &maiorRotulo, &(teste.nlinhas));
+        puts("");
 
         for(int i = 0; i < maiorRotulo+1; i++)
             free(matrizConfusa[i]); 
