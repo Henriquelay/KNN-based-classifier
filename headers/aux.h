@@ -4,7 +4,7 @@
 /*Aqui vai as funcoes*/
 #include <stdlib.h>
 #include <stdio.h>
-#include "headers/knn.h"
+#include "../headers/knn.h"
 
 void output(char**, int*, float*, float**, int***, char**, float*, int*);
 float geraConfusao(int***, Data*, float**, float*);

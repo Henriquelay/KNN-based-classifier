@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "headers/knn.h"
+#include "../headers/aux.h"
+#include "../headers/knn.h"
 
 void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados, int ***matrizConfusa, char **jordana, float *maiorRotulo, int *nlinhas){
 
