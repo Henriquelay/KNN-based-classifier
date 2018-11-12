@@ -13,19 +13,19 @@ void knnDist(Kneigh ***MatrizNeighs, Data treino, Data teste, Tamostra amostra){
     }
 
     //CALCULO DE DISTÂNCIA
-    for(int aTst = 0; aTst < teste.nlinhas; aTst++){
-        for(int aTrn = 0; aTrn < treino.nlinhas; aTrn ++){
+    for(int amostraTeste = 0; amostraTeste < teste.nlinhas; amostraTeste++){
+        for(int amostrTreino = 0; amostrTreino < treino.nlinhas; amostrTreino ++){
             switch(amostra.tipoDistancia){
                 case 'E':
-                    vizinho[aTst][aTrn].dist = euclidesVetor(teste.matriz[aTst],teste.ncolunas, treino.matriz[aTrn], treino.ncolunas);
+                    vizinho[amostraTeste][amostrTreino].dist = euclidesVetor(teste.matriz[amostraTeste],teste.ncolunas, treino.matriz[amostrTreino], treino.ncolunas);
                     break;
                 case 'C':
-                    vizinho[aTst][aTrn].dist = chebyshevVetor(teste.matriz[aTst],teste.ncolunas, treino.matriz[aTrn], treino.ncolunas);
+                    vizinho[amostraTeste][amostrTreino].dist = chebyshevVetor(teste.matriz[amostraTeste],teste.ncolunas, treino.matriz[amostrTreino], treino.ncolunas);
                     break;
                 case 'M':
-                    vizinho[aTst][aTrn].dist = minkowskiVetor(teste.matriz[aTst],teste.ncolunas, treino.matriz[aTrn], treino.ncolunas, amostra.coefMinkowski);
+                    vizinho[amostraTeste][amostrTreino].dist = minkowskiVetor(teste.matriz[amostraTeste],teste.ncolunas, treino.matriz[amostrTreino], treino.ncolunas, amostra.coefMinkowski);
             }
-            vizinho[aTst][aTrn].rotulo = treino.rotulo[aTrn];
+            vizinho[amostraTeste][amostrTreino].rotulo = treino.rotulo[amostrTreino];
         }
     }
     *MatrizNeighs = vizinho;
@@ -124,8 +124,8 @@ float classifica(Kneigh *vetorKelem, int k, float maiorRotulo){
         }
     }
 
-    return rotuloDef;
     free(ocorrenciasRot);
+    return rotuloDef;
 }
 
 //CLASSIFICA UMA MATRIZ DE AMOSTRAS
@@ -161,5 +161,7 @@ void knn(float **classVet, float *maxRotulo, Data treino, Data teste, Tamostra a
 
     *maxRotulo = maiorRotulo;
     *classVet = amostrasClass;
+    for(int i = 0; i < teste.nlinhas; i++)
+        free(matrizVizinhos[i]);
     free(matrizVizinhos);
 }

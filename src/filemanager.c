@@ -30,12 +30,23 @@ void printaMatriz(float **matriz, float *iD, int nColunas, int nLinhas){
     }
 }
 
+int countLinhas(FILE *arquivo){
+    int charAtual = 0, nLinhas = 1;
+
+    while((charAtual = fgetc(arquivo)) != EOF)
+        if(charAtual == 10) nLinhas++;
+
+    rewind(arquivo);
+    nLinhas--;  //pois o arquivo quebra linha mais uma vez antes do EOF
+    return nLinhas;
+}
+
 //pega os dados dos datasets e passa para vetores no programa
 void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *linhas, int *colunas){
     char junkChar;
     float **matriz;
     float *rotulo;
-    int c = 0, l = 0;
+    int c = 0, l = countLinhas(arquivo);
     
     for(int i = 0; !feof(arquivo); i++){
         fscanf(arquivo, "%c", &junkChar);
@@ -47,22 +58,25 @@ void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *l
     }
     rewind(arquivo);
 
-    matriz = (float**) calloc(1, sizeof(float*));
-    rotulo = (float*) calloc(1, sizeof(float));
+    matriz = (float**) malloc(l * sizeof(float*));
+    rotulo = (float*) malloc(l *sizeof(float));
 
-    for(int i = 1; !feof(arquivo); i++){
-        l++;
-        rotulo = (float*) realloc(rotulo, (i)*sizeof(float));
-        matriz = (float**) realloc(matriz, (i)*sizeof(float*));
-        
-        matriz[i-1] = (float *) calloc(c, sizeof(float));
-        for(int j = 0; j<c; j++){
-            fscanf(arquivo, "%f%c", &matriz[i-1][j], &junkChar);
+    for(int i = 0; i < l ; i++){
+        matriz[i] = (float *) malloc(c * sizeof(float));
+        for(int j = 0; j < c; j++){
+            fscanf(arquivo, "%f%c", &matriz[i][j], &junkChar);
         }
-        fscanf(arquivo, "%f%c", &rotulo[i-1], &junkChar);
+        fscanf(arquivo, "%f%c", &rotulo[i], &junkChar);
     }
-    l--; //Os arquivos de teste e treino possuem uma linha em branco no final do arquivo
-    matriz = (float **) realloc(matriz, l*sizeof(float *));
+
+    //printamatriz
+    // puts("MATRIZ:");
+    // for(int i = 0; i < l; i++){
+    //     for(int j = 0; j < c; j++)
+    //         printf("%.2f\t", matriz[i][j]);
+    //         printf("%.2f", rotulo[i]);
+    //     puts("");
+    // }
     
     *linhas = l;
     *colunas = c;
@@ -71,17 +85,6 @@ void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *l
     *rotuloVet = rotulo;
 
     fclose(arquivo);
-}
-
-int countLinhas(FILE *arquivo){
-    int charAtual = 0, nLinhas = 1;
-
-    while((charAtual = fgetc(arquivo)) != EOF)
-        if(charAtual == 10) nLinhas++;
-
-    rewind(arquivo);
-    nLinhas--;  //pois o arquivo quebra linha mais uma vez antes do EOF
-    return nLinhas;
 }
 
 //conta chars de uma linha especifica

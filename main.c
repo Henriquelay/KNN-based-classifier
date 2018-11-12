@@ -53,12 +53,11 @@ int main(int argc, char *argv[]){
     //conta quantos caracteres o maior numero de saída terá
     int maiorDigito = contaDigito(nLinhasVetores);
     
-    char* saida = (char*) malloc((maiorDigito + (int)strlen(paths->pathPredicao) + 14) * sizeof(char));
-    //+9 pelo "predicao_", +4 pelo ".txt", +1 pelo '\0'
-
     for(int c = 0; c < nLinhasVetores; c++){
         float *vetorClassificados;
         float maiorRotulo;
+        char* saida = (char*) malloc((maiorDigito + (int)strlen(paths->pathPredicao) + 14) * sizeof(char));
+        //+9 pelo "predicao_", +4 pelo ".txt", +1 pelo '\0'
 
         knn(&vetorClassificados, &maiorRotulo, treino, teste, amostras[c]);
         
@@ -95,25 +94,26 @@ int main(int argc, char *argv[]){
 
         printVetorFile(arq, teste.nlinhas, vetorClassificados);
         fclose(arq);
-        for(int i = 0; i < maiorRotulo; i++)
+        for(int i = 0; i < maiorRotulo+1; i++)
             free(matrizConfusa[i]); 
         free(matrizConfusa);
         free(vetorClassificados);
-        
+        free(saida);
     }
 
     printf("===Sucesso!===\nAs predicoes estao em ./%s\n", paths->pathPredicao);
 
-    free(saida);
     free(amostras);
     free(paths->pathTreino);
     free(paths->pathTeste);
     free(paths->pathPredicao);
     free(paths);
+
     for(int i = 0; i < treino.nlinhas; i++)
         free(treino.matriz[i]);
     free(treino.matriz);
     free(treino.rotulo);
+
     for(int i = 0; i < teste.nlinhas; i++)
         free(teste.matriz[i]);
     free(teste.matriz);
