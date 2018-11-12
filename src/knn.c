@@ -4,9 +4,8 @@
 #include "../headers/filemanager.h"
 
 void knnDist(Kneigh ***MatrizNeighs, Data treino, Data teste, Tamostra amostra){
-
+    //prepara a matriz que vai receber as structs contendo distancia e rotulo
     Kneigh **vizinho;
-
     vizinho = (Kneigh**) malloc(teste.nlinhas * sizeof(Kneigh*));
     for(int i = 0; i < teste.nlinhas; i++){
         vizinho[i] = (Kneigh *) malloc(treino.nlinhas * sizeof(Kneigh));
@@ -20,10 +19,14 @@ void knnDist(Kneigh ***MatrizNeighs, Data treino, Data teste, Tamostra amostra){
                     vizinho[amostraTeste][amostrTreino].dist = euclidesVetor(teste.matriz[amostraTeste],teste.ncolunas, treino.matriz[amostrTreino], treino.ncolunas);
                     break;
                 case 'C':
-                    vizinho[amostraTeste][amostrTreino].dist = chebyshevVetor(teste.matriz[amostraTeste],teste.ncolunas, treino.matriz[amostrTreino], treino.ncolunas);
+                    vizinho[amostraTeste][amostrTreino].dist = chernobylVetor(teste.matriz[amostraTeste],teste.ncolunas, treino.matriz[amostrTreino], treino.ncolunas);
                     break;
                 case 'M':
                     vizinho[amostraTeste][amostrTreino].dist = minkowskiVetor(teste.matriz[amostraTeste],teste.ncolunas, treino.matriz[amostrTreino], treino.ncolunas, amostra.coefMinkowski);
+            }
+            if(vizinho[amostraTeste][amostrTreino].dist == -1){
+                printf("Ocorreu um erro ao calcular as distâncias!\n");
+                exit(1);
             }
             vizinho[amostraTeste][amostrTreino].rotulo = treino.rotulo[amostrTreino];
         }
@@ -50,7 +53,7 @@ void insortVetor(Kneigh *vetor, Kneigh **vizinhoSord, int sizeVetor){
             n++;            
         }else{
             for(int c = 0; c < n; c++){
-                if(vetor[i].dist <= sorted[c].dist){//cOMPARA COM OS ELEMENTOS JÁ ORDENADOS 
+                if(vetor[i].dist <= sorted[c].dist){//COMPARA COM OS ELEMENTOS JÁ ORDENADOS 
                     sorted = (Kneigh*) realloc(sorted, (n+1) * sizeof(Kneigh));
                     for(int z = n; z > c; z--){//SE FOR MENOR, CHEGA OS ELEMENTOS MAIORES PARA FRENTE
                         sorted[z] = sorted[z-1];//COLOCA NA POSIÇÃO z
@@ -70,10 +73,10 @@ void insortVetor(Kneigh *vetor, Kneigh **vizinhoSord, int sizeVetor){
 void takeKNN(Kneigh *vetorAmostra, int sizeVetor, int k, Kneigh **knnVetor){
     Kneigh *vizinhoSord;
 
+    //Ordena o vetor de distâncias
     insortVetor(vetorAmostra, &vizinhoSord, sizeVetor);
-
+    //Trunca o tamanho do vetor no tamanho K
     vizinhoSord = (Kneigh*) realloc(vizinhoSord, k * sizeof(Kneigh)); 
-
 
     *knnVetor = vizinhoSord;
 }
@@ -132,19 +135,15 @@ float classifica(Kneigh *vetorKelem, int k, float maiorRotulo){
 void knn(float **classVet, float *maxRotulo, Data treino, Data teste, Tamostra amostra){    
 
     //CALCULANDO AS DISTÂNCIAS
-
     Kneigh **matrizVizinhos;
     puts(">Calculando distâncias...");
     knnDist(&matrizVizinhos, treino, teste, amostra);
 
     //CLASSIFICANDO TODAS AS AMOSTRAS
-
     float *amostrasClass;
-
     amostrasClass = (float*) malloc(teste.nlinhas * sizeof(float));
 
     float maiorRotulo = maxElem(treino.rotulo, treino.nlinhas);
-
 
     puts(">Classificando amostras...");
     for(int i = 0; i < teste.nlinhas; i++){
@@ -154,7 +153,6 @@ void knn(float **classVet, float *maxRotulo, Data treino, Data teste, Tamostra a
         takeKNN(matrizVizinhos[i], treino.nlinhas, amostra.k, &vetorKNN);
 
         // CLASSIFICA A AMOSTRA
-
         float rotulo = classifica(vetorKNN, amostra.k, maiorRotulo);
 
         amostrasClass[i] = rotulo;        
@@ -163,6 +161,7 @@ void knn(float **classVet, float *maxRotulo, Data treino, Data teste, Tamostra a
 
     *maxRotulo = maiorRotulo;
     *classVet = amostrasClass;
+    
     for(int i = 0; i < teste.nlinhas; i++)
         free(matrizVizinhos[i]);
     free(matrizVizinhos);

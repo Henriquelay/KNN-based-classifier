@@ -27,6 +27,5 @@ float maxElem(float*, int);
 float classifica(Kneigh*, int, float);
 void knn(float**, float*, Data, Data, Tamostra);
 
-
 /*Endif para evitar warnings*/
 #endif

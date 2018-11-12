@@ -1,11 +1,17 @@
+/*              Esta biblioteca contém as funções
+            que gerenciam leitura e escrita de arquivos
+
+                Davi Petris e Henrique Layber                  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "../headers/filemanager.h"
 
+//PRINTA A MATRIZ DE CONFUSÃO NO ARQUIVO DE SAÍDA
 void printMatrizFile(FILE *arq ,int size, int **matriz){
     fprintf(arq, "\n");
-    for(int i = 0; i < size; i++){ //PRINTA A MATRIZ DE CONFUSÃO
+    for(int i = 0; i < size; i++){ 
         for(int j = 0; j < size; j++){
             fprintf(arq, "%d ", matriz[i][j]);
         }
@@ -14,8 +20,9 @@ void printMatrizFile(FILE *arq ,int size, int **matriz){
     fprintf(arq, "\n");
 }
 
+//PRINTA AS PREDIÇÕES NO ARQUIVO DE SAÍDA
 void printVetorFile(FILE *arq, int size, float *vet){
-    for(int i = 0; i<size; i++){ //PRINTA AS PREDIÇÕES
+    for(int i = 0; i<size; i++){ 
         fprintf(arq, "%.f\n", vet[i]);
     }
 }
@@ -48,6 +55,7 @@ void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *l
     float *rotulo;
     int c = 0, l = countLinhas(arquivo);
     
+    //Conta a quantidade de colunas
     for(int i = 0; !feof(arquivo); i++){
         fscanf(arquivo, "%c", &junkChar);
         if(junkChar == ','){
@@ -56,31 +64,24 @@ void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *l
             break;
         }
     }
+
     rewind(arquivo);
 
     matriz = (float**) malloc(l * sizeof(float*));
     rotulo = (float*) malloc(l *sizeof(float));
 
+    //Guarda todos os valores em uma matriz
     for(int i = 0; i < l ; i++){
         matriz[i] = (float *) malloc(c * sizeof(float));
         for(int j = 0; j < c; j++){
             fscanf(arquivo, "%f%c", &matriz[i][j], &junkChar);
         }
+        //Guarda todos os rotulos em um vetor
         fscanf(arquivo, "%f%c", &rotulo[i], &junkChar);
     }
-
-    //printamatriz
-    // puts("MATRIZ:");
-    // for(int i = 0; i < l; i++){
-    //     for(int j = 0; j < c; j++)
-    //         printf("%.2f\t", matriz[i][j]);
-    //         printf("%.2f", rotulo[i]);
-    //     puts("");
-    // }
     
     *linhas = l;
     *colunas = c;
-
     *matrizAmostra  = matriz;
     *rotuloVet = rotulo;
 
@@ -98,15 +99,17 @@ int countChars(FILE *arquivo, int linha){
             nChars++;
             do{
                 nChars++;
-            }while((charAtual = getc(arquivo)) != 10);        //10 é \n em int
+            //10 é \n em int
+            }while((charAtual = getc(arquivo)) != 10);
         }
-        if(charAtual == 10) nLinhas++;
+        if(charAtual == 10) 
+            nLinhas++;
     }
     rewind(arquivo);
     return nChars;
 }
 
-//remove os \n que a função fgets pega nos vetores de PATH
+//remove a quebra de linha de uma string
 void tiraQuebra(char *string){
     int tamanho = strlen(string);
     for(int i = 0; i < tamanho; i++){
@@ -150,11 +153,13 @@ Tpaths* setupPaths(FILE *config){
     //início da leitura dos vetores
 
 Tamostra* setupAmostras(FILE *config, int linhasVetores){
-    
+  
     Tamostra *amostras = (Tamostra*) calloc(linhasVetores, sizeof(Tamostra));
 
     for(int i = 0; i < linhasVetores; i++){
+        //Armazena o valor de K e o tipo de distância
         fscanf(config, "%d, %c", &(amostras[i]).k, &(amostras[i]).tipoDistancia);
+        //Armazena o coeficiente de Minkwoski se necessário
         if((amostras[i]).tipoDistancia == 'M'){
             fscanf(config, ", %f\n", &(amostras[i]).coefMinkowski);
         }else{

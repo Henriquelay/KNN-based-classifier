@@ -1,12 +1,18 @@
+/*              Esta biblioteca contém as funções
+               que geram os dados de saída na main
+
+                Davi Petris e Henrique Layber                  */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "../headers/aux.h"
 #include "../headers/knn.h"
 
+//PRODUZ O ARQUIVO .txt DE SAÍDA
 void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados, int ***matrizConfusa, char **jordana, float *maiorRotulo, int *nlinhas){
 
         sprintf(*jordana, "%s%s%i%s", *pathPredicao ,"predicao_", *c + 1, ".txt");
-        printf("%s\n", *jordana);
+        printf(">Arquivo de saída: %s\n", *jordana);
 
         FILE *predicao = fopen(*jordana, "w");
 
@@ -23,6 +29,7 @@ void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados,
         fclose(predicao);
 }
 
+//GERA A MATRIZ DE CONFUSÃO E CALCULA A ACCURACY
 float geraConfusao(int ***matrizConfusa, Data *teste, float **vetorClassificados, float *maiorRotulo){
     int **matrizPerdida = (int**) calloc(*maiorRotulo + 1, sizeof(int*));
     //calloc pois fazemos a confusão por incrementos
@@ -39,6 +46,7 @@ float geraConfusao(int ***matrizConfusa, Data *teste, float **vetorClassificados
     return ((float) acertos / (float) teste->nlinhas);
 }
 
+//CONTA A QUANTIDADE DE DIGITOS QUE UM NÚMERO OCUPA
 int contaDigito(int num){
     int nDigitos = 1;
     while(num > 9){

@@ -1,14 +1,11 @@
 /*              Esta biblioteca contém as funções
                matemáticas para utilizacao da main
-               A fim de diminuir a poluição na main.
 
                 Davi Petris e Henrique Layber                  */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-
-// passar checagem de entradas pra main
 
 //Início do bloco Euclides
 float euclides(float featureTarget, float featureTraining){
@@ -59,7 +56,7 @@ float minkowskiVetor(float* vetorTarget, int tamTarget, float* vetorTraining, in
 }
 
 // distrnacia de Chebysshev aplicada em um vetor
-float chebyshevVetor(float* vetorTarget, int tamTarget, float* vetorTraining, int tamTraining){
+float chernobylVetor(float* vetorTarget, int tamTarget, float* vetorTraining, int tamTraining){
     float max = -1, atual;
 
     for(int i = 0; i < tamTarget; i++){

@@ -27,7 +27,7 @@ void main(){
     }
 
     while(1){
-    printf("\nM = Minkowski\tE = Euclides\tC = Chebyshev\tQ = Quit\n>");
+    printf("\nM = Minkowski\tE = Euclides\tC = chernobyl\tQ = Quit\n>");
     scanf(" %c", &c);
 
     switch(c){
@@ -43,7 +43,7 @@ void main(){
         break;
         case 'C':
         case 'c':
-            printf("%f\n_______\n",chebyshevVetor(target, indexTarget, training, indexTraining));
+            printf("%f\n_______\n",chernobylVetor(target, indexTarget, training, indexTraining));
         break;
         case 'Q':
         case 'q':

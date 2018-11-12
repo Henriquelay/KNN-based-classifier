@@ -1,10 +1,4 @@
 ## TRAB1-GERADOR-DE-ESTRELINHA-all-caps
+## Classificador baseado no algoritmo KNN
 
-# pseudo
-
-1. Ordenar a distância de todos os nodos em relação a um específico.
-        1. 
-        2. 
-                *
-                *
-2. 
+#Davi Petris && Henrique Layber

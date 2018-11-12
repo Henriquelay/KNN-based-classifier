@@ -45,16 +45,17 @@ int main(int argc, char *argv[]){
     //conta quantos caracteres o maior numero de saída terá
     int maiorDigito = contaDigito(nLinhasVetores);
     
+    //Gerando as predições para cada configuração diferente
     for(int c = 0; c < nLinhasVetores; c++){
         float *vetorClassificados;
         float maiorRotulo;
         char* jordana = (char*) malloc((maiorDigito + (int)strlen(paths->pathPredicao) + 14) * sizeof(char));
-        //jordana armazera a string de saida
+        //jordana armaneza o caminho do arquivo de saída
         //+9 pelo "predicao_", +4 pelo ".txt", +1 pelo '\0'
-
+        printf("-----CONFIGURAÇÃO Nº%d-----\n", c+1);
         knn(&vetorClassificados, &maiorRotulo, treino, teste, amostras[c]);
         
-        int **matrizConfusa;    //ela não faz ideia do que está fazendo
+        int **matrizConfusa;//ela não faz ideia do que está fazendo
 
         float acc = geraConfusao(&matrizConfusa, &teste, &vetorClassificados, &maiorRotulo);
  
@@ -68,7 +69,7 @@ int main(int argc, char *argv[]){
         free(jordana);
     }
 
-    printf("===Sucesso!===\nAs predicoes estao em ./%s\n", paths->pathPredicao);
+    printf("===Sucesso!===\nAs predicoes estao em /%s\n", paths->pathPredicao);
 
     free(amostras);
     free(paths->pathTreino);
