@@ -61,14 +61,20 @@ void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *l
     matriz = (float**) malloc(l * sizeof(float*));
     rotulo = (float*) malloc(l *sizeof(float));
 
-    for(int i = 1; !feof(arquivo); i++){
-        matriz[i-1] = (float *) malloc(c * sizeof(float));
+    for(int i = 0; i < l ; i++){
+        matriz[i] = (float *) malloc(c * sizeof(float));
         for(int j = 0; j < c; j++){
-            fscanf(arquivo, "%f%c", &matriz[i-1][j], &junkChar);
+            fscanf(arquivo, "%f%c", &matriz[i][j], &junkChar);
         }
-        fscanf(arquivo, "%f%c", &rotulo[i-1], &junkChar);
+        fscanf(arquivo, "%f%c", &rotulo[i], &junkChar);
     }
-    matriz = (float **) realloc(matriz, l*sizeof(float *));
+
+    //printamatriz
+    // for(int i = 0; i < l; i++){
+    //     for(int j = 0; j < c; j++)
+    //         printf("%.2f\t", matriz[i][j]);
+    //     puts("");
+    // }
     
     *linhas = l;
     *colunas = c;
