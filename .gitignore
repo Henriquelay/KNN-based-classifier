@@ -1,2 +1,2 @@
-data/iris/predicoes
-data/vowels/predicoes
+data/iris/predicoes/*
+data/vowels/predicoes/*

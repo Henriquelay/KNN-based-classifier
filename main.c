@@ -6,6 +6,15 @@
 #include "headers/filemanager.h"
 #include "headers/knn.h"
 
+int contaDigito(int num){
+    int nDigitos = 1;
+    while(num > 9){
+        num = num % 10;
+        nDigitos++;
+    }
+    return nDigitos;
+}
+
 
 int main(int argc, char *argv[]){
     FILE *config = fopen(argv[1], "r");
@@ -41,6 +50,7 @@ int main(int argc, char *argv[]){
     
     transcribe(testeFile, &teste.matriz, &teste.rotulo, &teste.nlinhas, &teste.ncolunas);
 
+
     for(int c = 0; c < nLinhasVetores; c++){
         float *vetorClassificados;
         float maiorRotulo;
@@ -65,18 +75,21 @@ int main(int argc, char *argv[]){
 
 
         //conta quantos caracteres o maior numero de saída terá
-        int nDigitos = 1, nLinhasVetoresTemp = nLinhasVetores;
-        while(nLinhasVetoresTemp > 9){
-            nLinhasVetoresTemp = nLinhasVetoresTemp % 10;
-            nDigitos++;
-        }
+        int maiorDigito = contaDigito(nLinhasVetores);
         
-        char* saida = (char*) calloc(nDigitos + strlen(paths->pathPredicao) + 13, sizeof(char));
+        char* saida = (char*) calloc(maiorDigito + strlen(paths->pathPredicao) + 13, sizeof(char));
         //+9 pelo "predicao_", +3 pelo ".txt", +1 pelo '\0'
         
         sprintf(saida, "%s%s%i%s", paths->pathPredicao ,"predicao_", c+1, ".txt");
+        printf("%s\n", saida);
 
         FILE *arq = fopen(saida, "w");
+
+        if (arq == NULL){
+            printf("Erro na gravação dos resultados\n");
+            printf("Pode ser que o diretório %s não exista.\n", paths->pathPredicao);
+            exit(1);
+        }
 
         fprintf(arq, "%.2f\n", acc); //PRINTA ACCURACY
 
