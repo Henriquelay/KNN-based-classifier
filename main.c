@@ -6,6 +6,26 @@
 #include "headers/filemanager.h"
 #include "headers/knn.h"
 
+void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados, int  ***matrizConfusa, char **jordana, float *maiorRotulo, int *nlinhas){
+
+        sprintf(*jordana, "%s%s%i%s", *pathPredicao ,"predicao_", *c + 1, ".txt");
+        printf("%s\n", *jordana);
+
+        FILE *predicao = fopen(*jordana, "w");
+
+        if (predicao == NULL){
+            printf("Erro na gravação dos resultados\n");
+            printf("Pode ser que o diretório %s não exista.\n", *pathPredicao);
+            exit(1);
+        }
+
+        fprintf(predicao, "%.2f\n", *acc); //PRINTA ACCURACY
+        printMatrizFile(predicao, (int) *maiorRotulo + 1, *matrizConfusa);
+        printVetorFile(predicao, *nlinhas, *vetorClassificados);
+
+        fclose(predicao);
+}
+
 int contaDigito(int num){
     int nDigitos = 1;
     while(num > 9){
@@ -58,12 +78,13 @@ int main(int argc, char *argv[]){
     for(int c = 0; c < nLinhasVetores; c++){
         float *vetorClassificados;
         float maiorRotulo;
-        char* saida = (char*) malloc((maiorDigito + (int)strlen(paths->pathPredicao) + 14) * sizeof(char));
+        char* jordana = (char*) malloc((maiorDigito + (int)strlen(paths->pathPredicao) + 14) * sizeof(char));
+        //jordana armazera a string de saida
         //+9 pelo "predicao_", +4 pelo ".txt", +1 pelo '\0'
 
         knn(&vetorClassificados, &maiorRotulo, treino, teste, amostras[c]);
         
-        int **matrizConfusa;
+        int **matrizConfusa;    //ela não faz ideia do que está fazendo
         matrizConfusa = (int**) calloc(maiorRotulo+1, sizeof(int *));
 
         for(int i = 0; i <= maiorRotulo; i++){
@@ -79,30 +100,15 @@ int main(int argc, char *argv[]){
 
         float acc = (float) acertos / (float) teste.nlinhas;
  
-        sprintf(saida, "%s%s%i%s", paths->pathPredicao ,"predicao_", c+1, ".txt");
-        printf("Arquivo de saída> %s\n", saida);
+        output(&(paths->pathPredicao), &c, &acc, &vetorClassificados, &matrizConfusa, &jordana, &maiorRotulo, &(teste.nlinhas));
 
-        FILE *arq = fopen(saida, "w");
-
-        if (arq == NULL){
-            printf("Erro na gravação dos resultados\n");
-            printf("Pode ser que o diretório %s não exista.\n", paths->pathPredicao);
-            exit(1);
-        }
-
-        fprintf(arq, "%.2f\n", acc); //PRINTA ACCURACY
-
-        printMatrizFile(arq, (int)maiorRotulo+1, matrizConfusa);
-
-        printVetorFile(arq, teste.nlinhas, vetorClassificados);
-        fclose(arq);
         for(int i = 0; i < maiorRotulo+1; i++)
             free(matrizConfusa[i]); 
         free(matrizConfusa);
         free(vetorClassificados);
-        free(saida);
-        puts("");
+        free(jordana);
     }
+
 
     printf("===Sucesso!===\nAs predicoes estao em ./%s\n", paths->pathPredicao);
 
