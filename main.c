@@ -50,6 +50,11 @@ int main(int argc, char *argv[]){
     
     transcribe(testeFile, &teste.matriz, &teste.rotulo, &teste.nlinhas, &teste.ncolunas);
 
+    //conta quantos caracteres o maior numero de saída terá
+    int maiorDigito = contaDigito(nLinhasVetores);
+    
+    char* saida = (char*) malloc((maiorDigito + (int)strlen(paths->pathPredicao) + 14) * sizeof(char));
+    //+9 pelo "predicao_", +4 pelo ".txt", +1 pelo '\0'
 
     for(int c = 0; c < nLinhasVetores; c++){
         float *vetorClassificados;
@@ -72,14 +77,7 @@ int main(int argc, char *argv[]){
         }
 
         float acc = (float) acertos / (float) teste.nlinhas;
-
-
-        //conta quantos caracteres o maior numero de saída terá
-        int maiorDigito = contaDigito(nLinhasVetores);
-        
-        char* saida = (char*) calloc(maiorDigito + strlen(paths->pathPredicao) + 13, sizeof(char));
-        //+9 pelo "predicao_", +3 pelo ".txt", +1 pelo '\0'
-        
+ 
         sprintf(saida, "%s%s%i%s", paths->pathPredicao ,"predicao_", c+1, ".txt");
         printf("%s\n", saida);
 
@@ -101,11 +99,12 @@ int main(int argc, char *argv[]){
             free(matrizConfusa[i]); 
         free(matrizConfusa);
         free(vetorClassificados);
-        free(saida);
+        
     }
 
     printf("===Sucesso!===\nAs predicoes estao em ./%s\n", paths->pathPredicao);
 
+    free(saida);
     free(amostras);
     free(paths->pathTreino);
     free(paths->pathTeste);
