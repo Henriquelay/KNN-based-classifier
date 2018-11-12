@@ -1,15 +1,15 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "headers/distancias.h"
 #include "headers/filemanager.h"
 #include "headers/knn.h"
+#include "headers/aux.h"
 
 void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados, int  ***matrizConfusa, char **jordana, float *maiorRotulo, int *nlinhas){
 
         sprintf(*jordana, "%s%s%i%s", *pathPredicao ,"predicao_", *c + 1, ".txt");
-        printf("%s\n", *jordana);
+        printf(">Arquivo de saída: %s\n", *jordana);
 
         FILE *predicao = fopen(*jordana, "w");
 
@@ -24,6 +24,22 @@ void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados,
         printVetorFile(predicao, *nlinhas, *vetorClassificados);
 
         fclose(predicao);
+}
+
+float geraConfusao(int ***matrizConfusa, Data *teste, float **vetorClassificados, float *maiorRotulo){
+    int **matrizPerdida = (int**) calloc(*maiorRotulo + 1, sizeof(int*));
+    //calloc pois fazemos a confusão por incrementos
+    for(int i = 0; i < *maiorRotulo + 1; i++){
+        matrizPerdida[i] = (int*) calloc(*maiorRotulo + 1, sizeof(int));
+    }
+
+    int acertos = 0;
+    for(int i = 0; i < teste->nlinhas; i++){
+        if((*vetorClassificados)[i] == teste->rotulo[i]) acertos++;
+        matrizPerdida[(int) teste->rotulo[i]][(int) (*vetorClassificados)[i]]++;
+    }
+    *matrizConfusa = matrizPerdida;
+    return ((float) acertos / (float) teste->nlinhas);
 }
 
 int contaDigito(int num){
@@ -47,6 +63,7 @@ int main(int argc, char *argv[]){
     int nLinhas = countLinhas(config);
     int nLinhasVetores = nLinhas - 3; //pois as 3 primeiras são paths
     //setupPaths deve ser usado antes de setupAmostras para posicionar o ponteiro da STREAM
+    puts(">Lendo arquivo de configuração...\n");
     Tpaths *paths = setupPaths(config);
     Tamostra *amostras = setupAmostras(config, nLinhasVetores);
 
@@ -58,6 +75,7 @@ int main(int argc, char *argv[]){
         exit(1);
     }
     
+    puts(">Lendo base de treino...");
     transcribe(treinoFile, &treino.matriz, &treino.rotulo, &treino.nlinhas, &treino.ncolunas);
 
     FILE *testeFile = fopen(paths->pathTeste, "r");
@@ -67,7 +85,7 @@ int main(int argc, char *argv[]){
         printf("Arquivo de treino não existe! Finalizando...\n");
         exit(1);
     }
-    
+    puts(">Lendo base de teste...\n");
     transcribe(testeFile, &teste.matriz, &teste.rotulo, &teste.nlinhas, &teste.ncolunas);
 
     //conta quantos caracteres o maior numero de saída terá
@@ -83,24 +101,13 @@ int main(int argc, char *argv[]){
         knn(&vetorClassificados, &maiorRotulo, treino, teste, amostras[c]);
         
         int **matrizConfusa;    //ela não faz ideia do que está fazendo
-        matrizConfusa = (int**) calloc(maiorRotulo+1, sizeof(int *));
 
-        for(int i = 0; i <= maiorRotulo; i++){
-            matrizConfusa[i] = (int*) calloc(maiorRotulo+1, sizeof(int));
-        }
-
-        int acertos = 0;
-        for(int i = 0; i < teste.nlinhas; i++){
-            if(vetorClassificados[i] == teste.rotulo[i])
-                acertos++;
-            matrizConfusa[(int) teste.rotulo[i]][(int) vetorClassificados[i]]++;
-        }
-
-        float acc = (float) acertos / (float) teste.nlinhas;
+        float acc = geraConfusao(&matrizConfusa, &teste, &vetorClassificados, &maiorRotulo);
  
         output(&(paths->pathPredicao), &c, &acc, &vetorClassificados, &matrizConfusa, &jordana, &maiorRotulo, &(teste.nlinhas));
+        puts("");
 
-        for(int i = 0; i < maiorRotulo+1; i++)
+        for(int i = 0; i < maiorRotulo + 1; i++)
             free(matrizConfusa[i]); 
         free(matrizConfusa);
         free(vetorClassificados);

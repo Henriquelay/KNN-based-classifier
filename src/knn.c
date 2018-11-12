@@ -134,6 +134,7 @@ void knn(float **classVet, float *maxRotulo, Data treino, Data teste, Tamostra a
     //CALCULANDO AS DISTÂNCIAS
 
     Kneigh **matrizVizinhos;
+    puts(">Calculando distâncias...");
     knnDist(&matrizVizinhos, treino, teste, amostra);
 
     //CLASSIFICANDO TODAS AS AMOSTRAS
@@ -144,7 +145,8 @@ void knn(float **classVet, float *maxRotulo, Data treino, Data teste, Tamostra a
 
     float maiorRotulo = maxElem(treino.rotulo, treino.nlinhas);
 
-    
+
+    puts(">Classificando amostras...");
     for(int i = 0; i < teste.nlinhas; i++){
         //PEGANDO OS K PRIMEIROS
         Kneigh *vetorKNN;

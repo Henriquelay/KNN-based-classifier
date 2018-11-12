@@ -2,9 +2,9 @@
 # diz que o programa é em C e deve usar o GCC
 CC=gcc
 # liga algumas flags de warn, mas não todas
-CFLAGS=-Wall -g
-OBJ= src/distancias.o src/filemanager.o src/knn.o main.o
-EXEC= distancias filemanager knn
+CFLAGS=-Wall -g -O2 -w
+OBJ= src/distancias.o src/filemanager.o src/knn.o src/aux.o main.o
+EXEC= distancias filemanager knn aux
 PREDIC= data/iris/predicoes/* data/vowels/predicoes/*
 
 all: main
@@ -24,6 +24,9 @@ filemanager.o: filemanager.c
 
 knn.o: knn.c
 	$ ${CC} -c src/knn.c ${CFLAGS}
+
+aux.o: aux.c
+	$ ${CC} -c src/aux.c ${CFLAGS}
 
 clean:
 	-rm ${OBJ}
