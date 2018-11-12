@@ -63,7 +63,7 @@ float chebyshevVetor(float* vetorTarget, int tamTarget, float* vetorTraining, in
     float max = -1, atual;
 
     for(int i = 0; i < tamTarget; i++){
-        atual = abs(vetorTarget[i] - vetorTraining[i]);
+        atual = sqrt((vetorTarget[i] - vetorTraining[i]) * (vetorTarget[i] - vetorTraining[i]));
         if(atual > max) max = atual;
     }
     
