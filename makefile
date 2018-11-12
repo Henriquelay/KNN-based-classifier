@@ -2,7 +2,7 @@
 # diz que o programa é em C e deve usar o GCC
 CC=gcc
 # liga algumas flags de warn, mas não todas
-CFLAGS=-Wall -g
+CFLAGS=-Wall -g -O2 -w
 OBJ= src/distancias.o src/filemanager.o src/knn.o main.o
 EXEC= distancias filemanager knn
 PREDIC= data/iris/predicoes/* data/vowels/predicoes/*

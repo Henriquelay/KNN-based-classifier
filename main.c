@@ -27,6 +27,7 @@ int main(int argc, char *argv[]){
     int nLinhas = countLinhas(config);
     int nLinhasVetores = nLinhas - 3; //pois as 3 primeiras são paths
     //setupPaths deve ser usado antes de setupAmostras para posicionar o ponteiro da STREAM
+    puts(">Lendo arquivo de configuração...\n");
     Tpaths *paths = setupPaths(config);
     Tamostra *amostras = setupAmostras(config, nLinhasVetores);
 
@@ -38,6 +39,7 @@ int main(int argc, char *argv[]){
         exit(1);
     }
     
+    puts(">Lendo base de treino...");
     transcribe(treinoFile, &treino.matriz, &treino.rotulo, &treino.nlinhas, &treino.ncolunas);
 
     FILE *testeFile = fopen(paths->pathTeste, "r");
@@ -47,7 +49,7 @@ int main(int argc, char *argv[]){
         printf("Arquivo de treino não existe! Finalizando...\n");
         exit(1);
     }
-    
+    puts(">Lendo base de teste...\n");
     transcribe(testeFile, &teste.matriz, &teste.rotulo, &teste.nlinhas, &teste.ncolunas);
 
     //conta quantos caracteres o maior numero de saída terá
@@ -78,7 +80,7 @@ int main(int argc, char *argv[]){
         float acc = (float) acertos / (float) teste.nlinhas;
  
         sprintf(saida, "%s%s%i%s", paths->pathPredicao ,"predicao_", c+1, ".txt");
-        printf("%s\n", saida);
+        printf("Arquivo de saída> %s\n", saida);
 
         FILE *arq = fopen(saida, "w");
 
@@ -99,6 +101,7 @@ int main(int argc, char *argv[]){
         free(matrizConfusa);
         free(vetorClassificados);
         free(saida);
+        puts("");
     }
 
     printf("===Sucesso!===\nAs predicoes estao em ./%s\n", paths->pathPredicao);
