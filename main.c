@@ -114,7 +114,6 @@ int main(int argc, char *argv[]){
         free(jordana);
     }
 
-
     printf("===Sucesso!===\nAs predicoes estao em ./%s\n", paths->pathPredicao);
 
     free(amostras);
