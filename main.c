@@ -94,7 +94,7 @@ int main(int argc, char *argv[]){
 
         printVetorFile(arq, teste.nlinhas, vetorClassificados);
         fclose(arq);
-        for(int i = 0; i < maiorRotulo; i++)
+        for(int i = 0; i < maiorRotulo+1; i++)
             free(matrizConfusa[i]); 
         free(matrizConfusa);
         free(vetorClassificados);
@@ -108,10 +108,12 @@ int main(int argc, char *argv[]){
     free(paths->pathTeste);
     free(paths->pathPredicao);
     free(paths);
+
     for(int i = 0; i < treino.nlinhas; i++)
         free(treino.matriz[i]);
     free(treino.matriz);
     free(treino.rotulo);
+
     for(int i = 0; i < teste.nlinhas; i++)
         free(teste.matriz[i]);
     free(teste.matriz);

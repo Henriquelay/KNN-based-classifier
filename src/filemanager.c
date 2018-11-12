@@ -70,9 +70,11 @@ void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *l
     }
 
     //printamatriz
+    // puts("MATRIZ:");
     // for(int i = 0; i < l; i++){
     //     for(int j = 0; j < c; j++)
     //         printf("%.2f\t", matriz[i][j]);
+    //         printf("%.2f", rotulo[i]);
     //     puts("");
     // }
     
