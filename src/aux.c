@@ -23,7 +23,7 @@ void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados,
         }
 
         fprintf(predicao, "%.2f\n", *acc); //PRINTA ACCURACY
-        printMatrizFile(predicao, (int) *maiorRotulo + 1, *matrizConfusa);
+        printMatrizFile(predicao, (int) *maiorRotulo, *matrizConfusa);
         printVetorFile(predicao, *nlinhas, *vetorClassificados);
 
         fclose(predicao);
@@ -31,18 +31,19 @@ void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados,
 
 //GERA A MATRIZ DE CONFUSÃO E CALCULA A ACCURACY
 float geraConfusao(int ***matrizConfusa, Data *teste, float **vetorClassificados, float *maiorRotulo){
-    int **matrizPerdida = (int**) calloc(*maiorRotulo + 1, sizeof(int*));
+    int **matrizPerdida = (int**) calloc(*maiorRotulo, sizeof(int*));
     //calloc pois fazemos a confusão por incrementos
-    for(int i = 0; i < *maiorRotulo + 1; i++){
-        matrizPerdida[i] = (int*) calloc(*maiorRotulo + 1, sizeof(int));
+    for(int i = 0; i < *maiorRotulo; i++){
+        matrizPerdida[i] = (int*) calloc(*maiorRotulo, sizeof(int));
     }
 
     int acertos = 0;
     for(int i = 0; i < teste->nlinhas; i++){
         if((*vetorClassificados)[i] == teste->rotulo[i]) acertos++;
-        matrizPerdida[(int) teste->rotulo[i]][(int) (*vetorClassificados)[i]]++;
+        matrizPerdida[((int) teste->rotulo[i]) - 1][((int) (*vetorClassificados)[i]) - 1]++;
     }
     *matrizConfusa = matrizPerdida;
+    
     return ((float) acertos / (float) teste->nlinhas);
 }
 
