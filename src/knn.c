@@ -3,32 +3,32 @@
 #include "../headers/distancias.h"
 #include "../headers/filemanager.h"
 
-void knnDist(Kneigh ***MatrizNeighs, Data treino, Data teste, Tamostra amostra){
+void knnDist(Kneigh ***MatrizNeighs, Data *treino, Data *teste, Tamostra *amostra){
     //prepara a matriz que vai receber as structs contendo distancia e rotulo
     Kneigh **vizinho;
-    vizinho = (Kneigh**) malloc(teste.nlinhas * sizeof(Kneigh*));
-    for(int i = 0; i < teste.nlinhas; i++){
-        vizinho[i] = (Kneigh *) malloc(treino.nlinhas * sizeof(Kneigh));
+    vizinho = (Kneigh**) malloc(teste->nlinhas * sizeof(Kneigh*));
+    for(int i = 0; i < teste->nlinhas; i++){
+        vizinho[i] = (Kneigh *) malloc(treino->nlinhas * sizeof(Kneigh));
     }
 
     //CALCULO DE DISTÂNCIA
-    for(int amostraTeste = 0; amostraTeste < teste.nlinhas; amostraTeste++){
-        for(int amostrTreino = 0; amostrTreino < treino.nlinhas; amostrTreino ++){
-            switch(amostra.tipoDistancia){
+    for(int amostraTeste = 0; amostraTeste < teste->nlinhas; amostraTeste++){
+        for(int amostraTreino = 0; amostraTreino < treino->nlinhas; amostraTreino ++){
+            switch(amostra->tipoDistancia){
                 case 'E':
-                    vizinho[amostraTeste][amostrTreino].dist = euclidesVetor(teste.matriz[amostraTeste],teste.ncolunas, treino.matriz[amostrTreino], treino.ncolunas);
+                    vizinho[amostraTeste][amostraTreino].dist = euclidesVetor(&teste->matriz[amostraTeste], &teste->ncolunas, &treino->matriz[amostraTreino], &treino->ncolunas);
                     break;
                 case 'C':
-                    vizinho[amostraTeste][amostrTreino].dist = chernobylVetor(teste.matriz[amostraTeste],teste.ncolunas, treino.matriz[amostrTreino], treino.ncolunas);
+                    vizinho[amostraTeste][amostraTreino].dist = chernobylVetor(&teste->matriz[amostraTeste], &teste->ncolunas, &treino->matriz[amostraTreino], &treino->ncolunas);
                     break;
                 case 'M':
-                    vizinho[amostraTeste][amostrTreino].dist = minkowskiVetor(teste.matriz[amostraTeste],teste.ncolunas, treino.matriz[amostrTreino], treino.ncolunas, amostra.coefMinkowski);
+                    vizinho[amostraTeste][amostraTreino].dist = minkowskiVetor(&teste->matriz[amostraTeste], &teste->ncolunas, &treino->matriz[amostraTreino], &treino->ncolunas, &amostra->coefMinkowski);
             }
-            if(vizinho[amostraTeste][amostrTreino].dist == -1){
+            if(vizinho[amostraTeste][amostraTreino].dist == -1){
                 printf("Ocorreu um erro ao calcular as distâncias!\n");
                 exit(1);
             }
-            vizinho[amostraTeste][amostrTreino].rotulo = treino.rotulo[amostrTreino];
+            vizinho[amostraTeste][amostraTreino].rotulo = treino->rotulo[amostraTreino];
         }
     }
     *MatrizNeighs = vizinho;
@@ -137,7 +137,7 @@ void knn(float **classVet, float *maxRotulo, Data treino, Data teste, Tamostra a
     //CALCULANDO AS DISTÂNCIAS
     Kneigh **matrizVizinhos;
     puts(">Calculando distâncias...");
-    knnDist(&matrizVizinhos, treino, teste, amostra);
+    knnDist(&matrizVizinhos, &treino, &teste, &amostra);
 
     //CLASSIFICANDO TODAS AS AMOSTRAS
     float *amostrasClass;

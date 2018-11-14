@@ -20,7 +20,7 @@ struct Kneigh{
 typedef struct Kneigh Kneigh;
 typedef struct Data Data;
 
-void knnDist(Kneigh***, Data, Data, Tamostra);
+void knnDist(Kneigh***, Data*, Data*, Tamostra*);
 void insortVetor(Kneigh*, Kneigh**, int);
 void takeKNN(Kneigh*, int, int, Kneigh**);
 float maxElem(float*, int);

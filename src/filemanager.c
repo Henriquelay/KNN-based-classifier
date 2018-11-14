@@ -49,23 +49,22 @@ int countLinhas(FILE *arquivo){
 }
 
 //pega os dados dos datasets e passa para vetores no programa
-void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *linhas, int *colunas){
+void transcribe(FILE **arquivo, float ***matrizAmostra, float **rotuloVet, int *linhas, int *colunas){
     char junkChar;
     float **matriz;
     float *rotulo;
-    int c = 0, l = countLinhas(arquivo);
+    int c = 0, l = countLinhas(*arquivo);
     
     //Conta a quantidade de colunas
-    for(int i = 0; !feof(arquivo); i++){
-        fscanf(arquivo, "%c", &junkChar);
+    for(int i = 0; !feof(*arquivo); i++){
+        fscanf(*arquivo, "%c", &junkChar);
         if(junkChar == ','){
             c++;
         }else if (junkChar == '\n'){
             break;
         }
     }
-
-    rewind(arquivo);
+    rewind(*arquivo);
 
     matriz = (float**) malloc(l * sizeof(float*));
     rotulo = (float*) malloc(l *sizeof(float));
@@ -74,10 +73,10 @@ void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *l
     for(int i = 0; i < l ; i++){
         matriz[i] = (float *) malloc(c * sizeof(float));
         for(int j = 0; j < c; j++){
-            fscanf(arquivo, "%f%c", &matriz[i][j], &junkChar);
+            fscanf(*arquivo, "%f%c", &matriz[i][j], &junkChar);
         }
         //Guarda todos os rotulos em um vetor
-        fscanf(arquivo, "%f%c", &rotulo[i], &junkChar);
+        fscanf(*arquivo, "%f%c", &rotulo[i], &junkChar);
     }
     
     *linhas = l;
@@ -85,7 +84,7 @@ void transcribe(FILE *arquivo, float ***matrizAmostra, float **rotuloVet, int *l
     *matrizAmostra  = matriz;
     *rotuloVet = rotulo;
 
-    fclose(arquivo);
+    fclose(*arquivo);
 }
 
 //conta chars de uma linha especifica

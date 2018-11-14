@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
     }
     
     puts(">Lendo base de treino...");
-    transcribe(treinoFile, &treino.matriz, &treino.rotulo, &treino.nlinhas, &treino.ncolunas);
+    transcribe(&treinoFile, &treino.matriz, &treino.rotulo, &treino.nlinhas, &treino.ncolunas);
 
     FILE *testeFile = fopen(paths->pathTeste, "r");
     Data teste;
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
         exit(1);
     }
     puts(">Lendo base de teste...\n");
-    transcribe(testeFile, &teste.matriz, &teste.rotulo, &teste.nlinhas, &teste.ncolunas);
+    transcribe(&testeFile, &teste.matriz, &teste.rotulo, &teste.nlinhas, &teste.ncolunas);
 
     //conta quantos caracteres o maior numero de saída terá
     int maiorDigito = contaDigito(nLinhasVetores);
