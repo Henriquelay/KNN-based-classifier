@@ -16,13 +16,13 @@ float euclides(float *featureTarget, float *featureTraining){
 }
 
 //implementa a distância euclidiana sobre um vetor
-float euclidesVetor(float **vetorTarget, int *tamTarget, float **vetorTraining, int *tamTraining){
+float euclidesVetor(float *vetorTarget, int *tamTarget, float *vetorTraining){
     int i;
     float acc = 0;
 
 
     for(i = 0; i < *tamTarget; i++)
-        acc += euclides(&vetorTarget[i], &vetorTraining[i]);
+        acc += euclides(&vetorTarget[i] , &vetorTraining[i]);
     
     float resultado = sqrt(acc);
 
@@ -36,12 +36,12 @@ float minkowski(float *featureTarget, float *featureTraining, float *r){
 }
 
 //implementa Minkowski sobre um vetor (terminando a formula dele)
-float minkowskiVetor(float **vetorTarget, int *tamTarget, float **vetorTraining, int *tamTraining, float *r){
+float minkowskiVetor(float *vetorTarget, int *tamTarget, float *vetorTraining, int *tamTraining, float *r){
     int i;
     float acc = 0;
 
     for(i = 0; i < *tamTarget; i++)
-        acc += minkowski(&vetorTarget[i], &vetorTraining[i], &r);
+        acc += minkowski(&vetorTarget[i], &vetorTraining[i], r);
 
     float resultado = pow(acc, 1/ *r);
 

@@ -4,10 +4,10 @@
 /*Aqui vai as funcoes*/
 
 float euclides(float*, float*);
-float euclidesVetor(float**, int*, float**, int*);
+float euclidesVetor(float*, int*, float*);
 
 float minkowski(float*, float*, float*);
-float minkowskiVetor(float**, int*, float**, int*, float*);
+float minkowskiVetor(float*, int*, float*, int*, float*);
 
 float chernobylVetor(float**, int*, float**, int*);
 
