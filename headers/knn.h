@@ -25,7 +25,7 @@ void insortVetor(Kneigh*, Kneigh**, int);
 void takeKNN(Kneigh*, int, int, Kneigh**);
 float maxElem(float*, int);
 float classifica(Kneigh*, int, float);
-void knn(float**, float*, Data, Data, Tamostra);
+void knn(float**, float*, Data*, Data*, Tamostra*);
 
 /*Endif para evitar warnings*/
 #endif

@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
         //jordana armaneza o caminho do arquivo de saída
         //+9 pelo "predicao_", +4 pelo ".txt", +1 pelo '\0'
         printf("-----CONFIGURAÇÃO Nº%d-----\n", c+1);
-        knn(&vetorClassificados, &maiorRotulo, treino, teste, amostras[c]);
+        knn(&vetorClassificados, &maiorRotulo, &treino, &teste, &amostras[c]);
         
         int **matrizConfusa;//ela não faz ideia do que está fazendo
 

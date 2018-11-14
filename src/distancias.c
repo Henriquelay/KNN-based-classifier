@@ -31,7 +31,7 @@ float euclidesVetor(float **vetorTarget, int *tamTarget, float **vetorTraining, 
 
 //Início do bloco Minkowski
 float minkowski(float *featureTarget, float *featureTraining, float *r){
-    float resultado = pow(sqrt((*featureTarget - *featureTraining) * (*featureTarget - *featureTraining)), *r);
+    float resultado = (float) pow(sqrt((*featureTarget - *featureTraining) * (*featureTarget - *featureTraining)), *r);
     return resultado;
 }
 

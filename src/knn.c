@@ -132,28 +132,28 @@ float classifica(Kneigh *vetorKelem, int k, float maiorRotulo){
 }
 
 //CLASSIFICA UMA MATRIZ DE AMOSTRAS
-void knn(float **classVet, float *maxRotulo, Data treino, Data teste, Tamostra amostra){    
+void knn(float **classVet, float *maxRotulo, Data *treino, Data *teste, Tamostra *amostra){    
 
     //CALCULANDO AS DISTÂNCIAS
     Kneigh **matrizVizinhos;
     puts(">Calculando distâncias...");
-    knnDist(&matrizVizinhos, &treino, &teste, &amostra);
+    knnDist(&matrizVizinhos, treino, teste, amostra);
 
     //CLASSIFICANDO TODAS AS AMOSTRAS
     float *amostrasClass;
-    amostrasClass = (float*) malloc(teste.nlinhas * sizeof(float));
+    amostrasClass = (float*) malloc(teste->nlinhas * sizeof(float));
 
-    float maiorRotulo = maxElem(treino.rotulo, treino.nlinhas);
+    float maiorRotulo = maxElem(treino->rotulo, treino->nlinhas);
 
     puts(">Classificando amostras...");
-    for(int i = 0; i < teste.nlinhas; i++){
+    for(int i = 0; i < teste->nlinhas; i++){
         //PEGANDO OS K PRIMEIROS
         Kneigh *vetorKNN;
 
-        takeKNN(matrizVizinhos[i], treino.nlinhas, amostra.k, &vetorKNN);
+        takeKNN(matrizVizinhos[i], treino->nlinhas, amostra->k, &vetorKNN);
 
         // CLASSIFICA A AMOSTRA
-        float rotulo = classifica(vetorKNN, amostra.k, maiorRotulo);
+        float rotulo = classifica(vetorKNN, amostra->k, maiorRotulo);
 
         amostrasClass[i] = rotulo;        
         free(vetorKNN);
@@ -162,7 +162,7 @@ void knn(float **classVet, float *maxRotulo, Data treino, Data teste, Tamostra a
     *maxRotulo = maiorRotulo;
     *classVet = amostrasClass;
     
-    for(int i = 0; i < teste.nlinhas; i++)
+    for(int i = 0; i < teste->nlinhas; i++)
         free(matrizVizinhos[i]);
     free(matrizVizinhos);
 }

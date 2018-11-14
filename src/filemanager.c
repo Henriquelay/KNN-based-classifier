@@ -23,7 +23,7 @@ void printMatrizFile(FILE *arq ,int size, int **matriz){
 //PRINTA AS PREDIÇÕES NO ARQUIVO DE SAÍDA
 void printVetorFile(FILE *arq, int size, float *vet){
     for(int i = 0; i<size; i++){ 
-        fprintf(arq, "%.f\n", vet[i]);
+        fprintf(arq, "%.f\n", vet[i]-1);
     }
 }
 
@@ -77,6 +77,7 @@ void transcribe(FILE **arquivo, float ***matrizAmostra, float **rotuloVet, int *
         }
         //Guarda todos os rotulos em um vetor
         fscanf(*arquivo, "%f%c", &rotulo[i], &junkChar);
+        //rotulo[i]--; //pois os rotulos começam de 0
     }
     
     *linhas = l;
