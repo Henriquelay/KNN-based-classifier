@@ -7,9 +7,9 @@ float euclides(float*, float*);
 float euclidesVetor(float*, int*, float*);
 
 float minkowski(float*, float*, float*);
-float minkowskiVetor(float*, int*, float*, float*);
+float minkowskiVetor(float*, int*, float*, int*, float*);
 
-float chernobylVetor(float**, int*, float**);
+float chernobylVetor(float**, int*, float**, int*);
 
 /*Endif para evitar warnings*/
 #endif

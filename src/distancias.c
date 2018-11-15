@@ -36,7 +36,7 @@ float minkowski(float *featureTarget, float *featureTraining, float *r){
 }
 
 //implementa Minkowski sobre um vetor (terminando a formula dele)
-float minkowskiVetor(float *vetorTarget, int *tamTarget, float *vetorTraining, float *r){
+float minkowskiVetor(float *vetorTarget, int *tamTarget, float *vetorTraining, int *tamTraining, float *r){
     int i;
     float acc = 0;
 
@@ -49,7 +49,7 @@ float minkowskiVetor(float *vetorTarget, int *tamTarget, float *vetorTraining, f
 }
 
 // distrnacia de Chebysshev aplicada em um vetor
-float chernobylVetor(float **vetorTarget, int *tamTarget, float **vetorTraining){
+float chernobylVetor(float **vetorTarget, int *tamTarget, float **vetorTraining, int *tamTraining){
     float max = -1, atual;
 
     for(int i = 0; i < *tamTarget; i++){
