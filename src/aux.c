@@ -33,17 +33,17 @@ void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados,
 float geraConfusao(int ***matrizConfusa, Data *teste, float **vetorClassificados, float *maiorRotulo){
     int **matrizPerdida = (int**) calloc(*maiorRotulo, sizeof(int*));
     //calloc pois fazemos a confusão por incrementos
-    for(int i = 0; i < *maiorRotulo; i++){
+    for(int i = 0; i <= *maiorRotulo; i++){
         matrizPerdida[i] = (int*) calloc(*maiorRotulo, sizeof(int));
     }
 
     int acertos = 0;
     for(int i = 0; i < teste->nlinhas; i++){
         if((*vetorClassificados)[i] == teste->rotulo[i]) acertos++;
-        matrizPerdida[((int) teste->rotulo[i]) - 1][((int) (*vetorClassificados)[i]) - 1]++;
+        matrizPerdida[((int) teste->rotulo[i])][((int) (*vetorClassificados)[i])]++;
     }
     *matrizConfusa = matrizPerdida;
-    
+
     return ((float) acertos / (float) teste->nlinhas);
 }
 

@@ -11,8 +11,8 @@
 //PRINTA A MATRIZ DE CONFUSÃO NO ARQUIVO DE SAÍDA
 void printMatrizFile(FILE *arq ,int size, int **matriz){
     fprintf(arq, "\n");
-    for(int i = 0; i < size; i++){ 
-        for(int j = 0; j < size; j++){
+    for(int i = 0; i <= size; i++){ 
+        for(int j = 0; j <= size; j++){
             fprintf(arq, "%d ", matriz[i][j]);
         }
         fprintf(arq, "\n");
@@ -23,7 +23,7 @@ void printMatrizFile(FILE *arq ,int size, int **matriz){
 //PRINTA AS PREDIÇÕES NO ARQUIVO DE SAÍDA
 void printVetorFile(FILE *arq, int size, float *vet){
     for(int i = 0; i<size; i++){ 
-        fprintf(arq, "%.f\n", vet[i]-1);
+        fprintf(arq, "%.f\n", vet[i]);
     }
 }
 
@@ -77,6 +77,7 @@ void transcribe(FILE **arquivo, float ***matrizAmostra, float **rotuloVet, int *
         }
         //Guarda todos os rotulos em um vetor
         fscanf(*arquivo, "%f%c", &rotulo[i], &junkChar);
+        rotulo[i]--;
         //rotulo[i]--; //pois os rotulos começam de 0
     }
     

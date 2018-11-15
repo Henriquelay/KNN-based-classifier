@@ -105,7 +105,7 @@ float classifica(Kneigh *vetorKelem, int k, float maiorRotulo){
 
     //CRIA UM VETOR DE NÚMERO DE OCORRÊNCIAS
     //ONDE CADA ÍNDICE CORRESPONDE A UM RÓTULO
-    ocorrenciasRot = (int*) calloc(maiorRotulo+1, sizeof(int));
+    ocorrenciasRot = (int*) calloc(maiorRotulo, sizeof(int));
     
     for(int i = 0; i < k; i++){
         int rotuloAtual = vetorKelem[i].rotulo;
