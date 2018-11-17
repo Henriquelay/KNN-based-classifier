@@ -8,6 +8,12 @@
 #include "../headers/aux.h"
 #include "../headers/knn.h"
 
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
 //PRODUZ O ARQUIVO .txt DE SAÍDA
 void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados, int ***matrizConfusa, char **jordana, float *maiorRotulo, int *nlinhas){
 
@@ -55,4 +61,27 @@ int contaDigito(int num){
         nDigitos++;
     }
     return nDigitos;
+}
+
+void header(){
+    puts("");
+    printf("KKKKKKKKK    KKKKKKKNNNNNNNN        NNNNNNNNNNNNNNNN        NNNNNNNN\n");
+    printf("K:::::::K    K:::::KN:::::::N       N::::::NN:::::::N       N::::::N\n");
+    printf("K:::::::K    K:::::KN::::::::N      N::::::NN::::::::N      N::::::N\n");
+    printf("K:::::::K   K::::::KN:::::::::N     N::::::NN:::::::::N     N::::::N\n");
+    printf("KK::::::K  K:::::KKKN::::::::::N    N::::::NN::::::::::N    N::::::N\n");
+    printf("  K:::::K K:::::K   N:::::::::::N   N::::::NN:::::::::::N   N::::::N\n");
+    printf("  K::::::K:::::K    N:::::::N::::N  N::::::NN:::::::N::::N  N::::::N\n");
+    printf("  K:::::::::::K     N::::::N N::::N N::::::NN::::::N N::::N N::::::N\n");
+    printf("  K:::::::::::K     N::::::N  N::::N:::::::NN::::::N  N::::N:::::::N\n");
+    printf("  K::::::K:::::K    N::::::N   N:::::::::::NN::::::N   N:::::::::::N\n");
+    printf("  K:::::K K:::::K   N::::::N    N::::::::::NN::::::N    N::::::::::N\n");
+    printf("KK::::::K  K:::::KKKN::::::N     N:::::::::NN::::::N     N:::::::::N\n");
+    printf("K:::::::K   K::::::KN::::::N      N::::::::NN::::::N      N::::::::N\n");
+    printf("K:::::::K    K:::::KN::::::N       N:::::::NN::::::N       N:::::::N\n");
+    printf("K:::::::K    K:::::KN::::::N        N::::::NN::::::N        N::::::N\n");
+    printf("KKKKKKKKK    KKKKKKKNNNNNNNN         NNNNNNNNNNNNNNN         NNNNNNN\n");
+    puts("");
+    puts("");
+    sleep(1);
 }
