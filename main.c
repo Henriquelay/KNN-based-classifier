@@ -67,7 +67,7 @@ int main(int argc, char *argv[]){
         output(&(paths->pathPredicao), &c, &acc, &vetorClassificados, &matrizConfusa, &jordana, &maiorRotulo, &(teste.nlinhas));
         puts("");
 
-        for(int i = 0; i < maiorRotulo; i++)
+        for(int i = 0; i <= maiorRotulo; i++)
             free(matrizConfusa[i]); 
         free(matrizConfusa);
         free(vetorClassificados);

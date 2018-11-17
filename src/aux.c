@@ -31,10 +31,10 @@ void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados,
 
 //GERA A MATRIZ DE CONFUSÃO E CALCULA A ACCURACY
 float geraConfusao(int ***matrizConfusa, Data *teste, float **vetorClassificados, float *maiorRotulo){
-    int **matrizPerdida = (int**) calloc(*maiorRotulo, sizeof(int*));
+    int **matrizPerdida = (int**) calloc(*maiorRotulo+1, sizeof(int*));
     //calloc pois fazemos a confusão por incrementos
     for(int i = 0; i <= *maiorRotulo; i++){
-        matrizPerdida[i] = (int*) calloc(*maiorRotulo, sizeof(int));
+        matrizPerdida[i] = (int*) calloc (*maiorRotulo+1, sizeof(int));
     }
 
     int acertos = 0;
