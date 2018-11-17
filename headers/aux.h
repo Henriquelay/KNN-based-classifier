@@ -9,6 +9,7 @@
 void output(char**, int*, float*, float**, int***, char**, float*, int*);
 float geraConfusao(int***, Data*, float**, float*);
 int contaDigito(int);
+void header();
 
 /*Endif para evitar warnings*/
 #endif

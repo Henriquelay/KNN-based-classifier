@@ -6,7 +6,9 @@
 #include "headers/knn.h"
 #include "headers/aux.h"
 
+
 int main(int argc, char *argv[]){
+    header();
     FILE *config = fopen(argv[1], "r");
 
     if(config == NULL){
