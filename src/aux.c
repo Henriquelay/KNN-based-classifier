@@ -11,7 +11,7 @@
 //PRODUZ O ARQUIVO .txt DE SAÍDA
 void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados, int ***matrizConfusa, char **jordana, float *maiorRotulo, int *nlinhas){
 
-        sprintf(*jordana, "%s%s%i%s", *pathPredicao ,"predicao_", *c + 1, ".txt");
+        sprintf(*jordana, "%spredicao_%i.txt", *pathPredicao, *c + 1);
         printf(">Arquivo de saída: %s\n", *jordana);
 
         FILE *predicao = fopen(*jordana, "w");

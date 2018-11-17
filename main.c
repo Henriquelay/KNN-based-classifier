@@ -42,6 +42,11 @@ int main(int argc, char *argv[]){
     puts(">Lendo base de teste...\n");
     transcribe(&testeFile, &teste.matriz, &teste.rotulo, &teste.nlinhas, &teste.ncolunas);
 
+    if(teste.ncolunas != treino.ncolunas){
+        printf("A base de testes não possui a quantidade correta de features!\n");
+        exit(1);
+    }
+
     //conta quantos caracteres o maior numero de saída terá
     int maiorDigito = contaDigito(nLinhasVetores);
     

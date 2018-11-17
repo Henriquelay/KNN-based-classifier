@@ -24,10 +24,6 @@ void knnDist(Kneigh ***MatrizNeighs, Data *treino, Data *teste, Tamostra *amostr
                 case 'M':
                     vizinho[amostraTeste][amostraTreino].dist = minkowskiVetor(teste->matriz[amostraTeste], &teste->ncolunas, treino->matriz[amostraTreino], &treino->ncolunas, &amostra->coefMinkowski);
             }
-            if(vizinho[amostraTeste][amostraTreino].dist == -1){
-                printf("Ocorreu um erro ao calcular as distâncias!\n");
-                exit(1);
-            }
             vizinho[amostraTeste][amostraTreino].rotulo = treino->rotulo[amostraTreino];
         }
     }
