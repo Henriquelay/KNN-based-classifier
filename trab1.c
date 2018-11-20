@@ -64,7 +64,7 @@ int main(){
         printf("K = %d ; DIST = %c ;", amostras[c].k, amostras[c].tipoDistancia);
         
         if(amostras[c].tipoDistancia == 'M')
-            printf(" ; COEF = %.1f", amostras[c].coefMinkowski);
+            printf(" COEF = %.1f ;", amostras[c].coefMinkowski);
 
         puts("");
 
