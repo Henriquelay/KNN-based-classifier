@@ -7,9 +7,9 @@
 #include "headers/aux.h"
 
 
-int main(int argc, char *argv[]){
+int main(){
     header();
-    FILE *config = fopen(argv[1], "r");
+    FILE *config = fopen("config.txt", "r");
 
     if(config == NULL){
         printf("Arquivo de config não existe! Finalizando...\n");
