@@ -59,7 +59,15 @@ int main(int argc, char *argv[]){
         char* jordana = (char*) malloc((maiorDigito + (int)strlen(paths->pathPredicao) + 14) * sizeof(char));
         //jordana armaneza o caminho do arquivo de saída
         //+9 pelo "predicao_", +4 pelo ".txt", +1 pelo '\0'
-        printf("-----CONFIGURAÇÃO Nº%d-----\n", c+1);
+        printf("-------CONFIGURAÇÃO Nº%d-------\n", c+1);
+
+        printf("K = %d ; DIST = %c ;", amostras[c].k, amostras[c].tipoDistancia);
+        
+        if(amostras[c].tipoDistancia == 'M')
+            printf(" ; COEF = %.1f", amostras[c].coefMinkowski);
+
+        puts("");
+
         knn(&vetorClassificados, &maiorRotulo, &treino, &teste, &amostras[c]);
         
         int **matrizConfusa;//ela não faz ideia do que está fazendo

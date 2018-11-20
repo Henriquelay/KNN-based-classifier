@@ -13,7 +13,9 @@ void printMatrizFile(FILE *arq ,int size, int **matriz){
     fprintf(arq, "\n");
     for(int i = 0; i <= size; i++){ 
         for(int j = 0; j <= size; j++){
-            fprintf(arq, "%d ", matriz[i][j]);
+            fprintf(arq, "%d", matriz[i][j]);    
+            if(j!=size)
+                fprintf(arq, " ");    
         }
         fprintf(arq, "\n");
     }
