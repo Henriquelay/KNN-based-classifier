@@ -46,11 +46,11 @@ float minkowskiVetor(float *vetorTarget, int *tamTarget, float *vetorTraining, i
     int i;
     float dif, acc = 0;
 
-    for(i = 0; i < *tamTarget; i++)
-        dif = absF(vetorTarget[i] - vetorTraining[i]);
-        acc += pow(dif, r);
-
-    float resultado = pow(acc, 1/r);
+    for(i = 0; i < *tamTarget; i++){
+        acc += absF(vetorTarget[i] - vetorTraining[i]);        
+    }
+    float resultado = pow(acc, r);
+    resultado = pow(acc, 1/r);
 
     return resultado;
 }
