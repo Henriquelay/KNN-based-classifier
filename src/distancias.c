@@ -9,6 +9,16 @@
 #include "../headers/filemanager.h"
 #include "../headers/distancias.h"
 
+float absF(float num){
+    if (num < 0){
+        num = num * (-1);
+    }
+
+    return num;
+}
+
+
+
 //Início do bloco Euclides
 float euclides(float *featureTarget, float *featureTraining){
     float resultado = (*featureTarget - *featureTraining) * (*featureTarget - *featureTraining);
@@ -30,20 +40,17 @@ float euclidesVetor(float *vetorTarget, int *tamTarget, float *vetorTraining){
 }
 
 //Início do bloco Minkowski
-float minkowski(float *featureTarget, float *featureTraining, float *r){
-    float resultado = (float) pow(sqrt((*featureTarget - *featureTraining) * (*featureTarget - *featureTraining)), *r);
-    return resultado;
-}
 
 //implementa Minkowski sobre um vetor (terminando a formula dele)
-float minkowskiVetor(float *vetorTarget, int *tamTarget, float *vetorTraining, int *tamTraining, float *r){
+float minkowskiVetor(float *vetorTarget, int *tamTarget, float *vetorTraining, int *tamTraining, float r){
     int i;
-    float acc = 0;
+    float dif, acc = 0;
 
     for(i = 0; i < *tamTarget; i++)
-        acc += minkowski(&vetorTarget[i], &vetorTraining[i], r);
+        dif = absF(vetorTarget[i] - vetorTraining[i]);
+        acc += pow(dif, r);
 
-    float resultado = pow(acc, 1/ *r);
+    float resultado = pow(acc, 1/r);
 
     return resultado;
 }

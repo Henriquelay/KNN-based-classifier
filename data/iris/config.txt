@@ -1,6 +1,6 @@
 data/iris/dataset/iris_treino.csv
 data/iris/dataset/iris_teste.csv
-data/iris/predicoes/
+predicoes/
 3, C
 3, M, 0.5
 3, E

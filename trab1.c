@@ -84,7 +84,7 @@ int main(){
         free(jordana);
     }
 
-    printf("===Sucesso!===\nAs predicoes estao em /%s\n", paths->pathPredicao);
+    printf("===Sucesso!===\nAs predicoes estao em %s\n", paths->pathPredicao);
 
     free(amostras);
     free(paths->pathTreino);

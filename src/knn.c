@@ -22,7 +22,7 @@ void knnDist(Kneigh ***MatrizNeighs, Data *treino, Data *teste, Tamostra *amostr
                     vizinho[amostraTeste][amostraTreino].dist = chernobylVetor(&teste->matriz[amostraTeste], &teste->ncolunas, &treino->matriz[amostraTreino], &treino->ncolunas);
                     break;
                 case 'M':
-                    vizinho[amostraTeste][amostraTreino].dist = minkowskiVetor(teste->matriz[amostraTeste], &teste->ncolunas, treino->matriz[amostraTreino], &treino->ncolunas, &amostra->coefMinkowski);
+                    vizinho[amostraTeste][amostraTreino].dist = minkowskiVetor(teste->matriz[amostraTeste], &teste->ncolunas, treino->matriz[amostraTreino], &treino->ncolunas, amostra->coefMinkowski);
             }
             vizinho[amostraTeste][amostraTreino].rotulo = treino->rotulo[amostraTreino];
         }
