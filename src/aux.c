@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../headers/aux.h"
-#include "../headers/knn.h"
 
 #ifdef _WIN32
 #include <Windows.h>

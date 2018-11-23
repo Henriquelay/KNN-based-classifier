@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "../headers/knn.h"
-#include "../headers/distancias.h"
 #include "../headers/filemanager.h"
+#include "../headers/distancias.h"
 
 void knnDist(Kneigh ***MatrizNeighs, Data *treino, Data *teste, Tamostra *amostra){
     //prepara a matriz que vai receber as structs contendo distancia e rotulo
@@ -18,11 +18,11 @@ void knnDist(Kneigh ***MatrizNeighs, Data *treino, Data *teste, Tamostra *amostr
                 case 'E':
                     vizinho[amostraTeste][amostraTreino].dist = euclidesVetor(teste->matriz[amostraTeste], &teste->ncolunas, treino->matriz[amostraTreino]);
                     break;
-                case 'C':
-                    vizinho[amostraTeste][amostraTreino].dist = chernobylVetor(&teste->matriz[amostraTeste], &teste->ncolunas, &treino->matriz[amostraTreino], &treino->ncolunas);
-                    break;
                 case 'M':
-                    vizinho[amostraTeste][amostraTreino].dist = minkowskiVetor(teste->matriz[amostraTeste], &teste->ncolunas, treino->matriz[amostraTreino], &treino->ncolunas, amostra->coefMinkowski);
+                    vizinho[amostraTeste][amostraTreino].dist = minkowskiVetor(teste->matriz[amostraTeste], &teste->ncolunas, treino->matriz[amostraTreino], amostra->coefMinkowski);
+                    break;
+                case 'C':
+                    vizinho[amostraTeste][amostraTreino].dist = chernobylVetor(teste->matriz[amostraTeste], &teste->ncolunas, treino->matriz[amostraTreino]);
             }
             vizinho[amostraTeste][amostraTreino].rotulo = treino->rotulo[amostraTreino];
         }
@@ -149,9 +149,8 @@ void knn(float **classVet, float *maxRotulo, Data *treino, Data *teste, Tamostra
         takeKNN(matrizVizinhos[i], treino->nlinhas, amostra->k, &vetorKNN);
 
         // CLASSIFICA A AMOSTRA
-        float rotulo = classifica(vetorKNN, amostra->k, maiorRotulo);
+        amostrasClass[i] = classifica(vetorKNN, amostra->k, maiorRotulo);
 
-        amostrasClass[i] = rotulo;        
         free(vetorKNN);
     }
 

@@ -4,9 +4,7 @@
                 Davi Petris e Henrique Layber                  */
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
-#include "../headers/filemanager.h"
 #include "../headers/distancias.h"
 
 float absF(float num){
@@ -17,14 +15,6 @@ float absF(float num){
     return num;
 }
 
-
-
-//Início do bloco Euclides
-float euclides(float *featureTarget, float *featureTraining){
-    float resultado = (*featureTarget - *featureTraining) * (*featureTarget - *featureTraining);
-    return resultado;
-}
-
 //implementa a distância euclidiana sobre um vetor
 float euclidesVetor(float *vetorTarget, int *tamTarget, float *vetorTraining){
     int i;
@@ -32,7 +22,7 @@ float euclidesVetor(float *vetorTarget, int *tamTarget, float *vetorTraining){
 
 
     for(i = 0; i < *tamTarget; i++)
-        acc += euclides(&vetorTarget[i] , &vetorTraining[i]);
+        acc += (vetorTarget[i] - vetorTraining[i]) * (vetorTarget[i] - vetorTraining[i]);
     
     float resultado = sqrt(acc);
 
@@ -42,7 +32,7 @@ float euclidesVetor(float *vetorTarget, int *tamTarget, float *vetorTraining){
 //Início do bloco Minkowski
 
 //implementa Minkowski sobre um vetor (terminando a formula dele)
-float minkowskiVetor(float *vetorTarget, int *tamTarget, float *vetorTraining, int *tamTraining, float r){
+float minkowskiVetor(float *vetorTarget, int *tamTarget, float *vetorTraining, float r){
     int i;
     float dif, acc = 0;
 
@@ -56,11 +46,11 @@ float minkowskiVetor(float *vetorTarget, int *tamTarget, float *vetorTraining, i
 }
 
 // distrnacia de Chebysshev aplicada em um vetor
-float chernobylVetor(float **vetorTarget, int *tamTarget, float **vetorTraining, int *tamTraining){
+float chernobylVetor(float *vetorTarget, int *tamTarget, float *vetorTraining){
     float max = -1, atual;
 
     for(int i = 0; i < *tamTarget; i++){
-        atual = sqrt(((*vetorTarget)[i] - (*vetorTraining)[i]) * ((*vetorTarget)[i] - (*vetorTraining)[i]));
+        atual = sqrt((vetorTarget[i] - vetorTraining[i]) * (vetorTarget[i] - vetorTraining[i]));
         if(atual > max) max = atual;
     }
     

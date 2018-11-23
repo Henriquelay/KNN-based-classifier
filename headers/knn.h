@@ -2,8 +2,10 @@
 #ifndef _H_KNN
 #define _H_KNN
 /*Aqui vai as funcoes*/
-#include <stdio.h>
-#include "filemanager.h"
+#include <stdlib.h>
+#include "../headers/knn.h"
+#include "../headers/filemanager.h"
+#include "../headers/distancias.h"
 
 struct Data{
         float** matriz;
