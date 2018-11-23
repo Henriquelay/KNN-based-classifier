@@ -124,8 +124,8 @@ void tiraQuebra(char *string){
 
 //pega os PATHs do config para vetores do programa
 Tpaths* setupPaths(FILE *config){
-    int sizeTreino = countChars(config, 1) + 2;
-    int sizeTeste = countChars(config, 2) + 2;
+    int sizeTreino = countChars(config, 1) + 1;
+    int sizeTeste = countChars(config, 2) + 1;
     int sizePerdicao = countChars(config, 3) + 1;
     //+1 para ter espaço para o \n e \0 da string a ser inserida
     
@@ -145,8 +145,8 @@ Tpaths* setupPaths(FILE *config){
     t->pathTeste = (char*) malloc(strlen(testeTemp) + sizeof(char));
     t->pathPredicao = (char*) malloc(strlen(predicaoTemp) + sizeof(char));
 
-    sprintf(t->pathTreino, "/%s", treinoTemp);
-    sprintf(t->pathTeste, "/%s", testeTemp);
+    strcpy(t->pathTreino, treinoTemp);
+    strcpy(t->pathTeste, testeTemp);
     strcpy(t->pathPredicao, predicaoTemp);
 
     return t;
