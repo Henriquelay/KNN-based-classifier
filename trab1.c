@@ -6,7 +6,6 @@
 #include "headers/knn.h"
 #include "headers/aux.h"
 
-
 int main(){
     header();
     FILE *config = fopen("config.txt", "r");
@@ -16,18 +15,19 @@ int main(){
         exit(1);
     }
 
+    puts(">Lendo arquivo de configuração...\n");
     int nLinhas = countLinhas(config);
     int nLinhasVetores = nLinhas - 3; //pois as 3 primeiras são paths
     //setupPaths deve ser usado antes de setupAmostras para posicionar o ponteiro da STREAM
-    puts(">Lendo arquivo de configuração...\n");
     Tpaths *paths = setupPaths(config);
     Tamostra *amostras = setupAmostras(config, nLinhasVetores);
+    printf(">Treino: \t%s\n>Teste: \t%s\n>Saida: \t%s\n\n", paths->pathTreino, paths->pathTeste, paths->pathPredicao);
 
     FILE *treinoFile = fopen(paths->pathTreino, "r");
     Data treino;
 
     if(treinoFile == NULL){
-        printf("Arquivo de treino não existe! Finalizando...\n");
+        printf(">Arquivo de treino não existe! Finalizando...\n");
         exit(1);
     }
     
@@ -38,14 +38,14 @@ int main(){
     Data teste;
 
     if(testeFile == NULL){
-        printf("Arquivo de treino não existe! Finalizando...\n");
+        printf(">Arquivo de treino não existe! Finalizando...\n");
         exit(1);
     }
     puts(">Lendo base de teste...\n");
     transcribe(&testeFile, &teste.matriz, &teste.rotulo, &teste.nlinhas, &teste.ncolunas);
 
     if(teste.ncolunas != treino.ncolunas){
-        printf("A base de testes não possui a quantidade correta de features!\n");
+        printf(">As bases tem tamanho de features diferentes! Finalizando...\n");
         exit(1);
     }
 
@@ -59,14 +59,8 @@ int main(){
         char* jordana = (char*) malloc((maiorDigito + (int)strlen(paths->pathPredicao) + 14) * sizeof(char));
         //jordana armaneza o caminho do arquivo de saída
         //+9 pelo "predicao_", +4 pelo ".txt", +1 pelo '\0'
-        printf("-------CONFIGURAÇÃO Nº%d-------\n", c+1);
 
-        printf("K = %d ; DIST = %c ;", amostras[c].k, amostras[c].tipoDistancia);
-        
-        if(amostras[c].tipoDistancia == 'M')
-            printf(" COEF = %.1f ;", amostras[c].coefMinkowski);
-
-        puts("");
+        printarStatus(&c, amostras);
 
         knn(&vetorClassificados, &maiorRotulo, &treino, &teste, &amostras[c]);
         
@@ -84,7 +78,7 @@ int main(){
         free(jordana);
     }
 
-    printf("===Sucesso!===\nAs predicoes estao em %s\n", paths->pathPredicao);
+    printf("_____________________________________________\n>As predicoes estao em %s\n=====Sucesso!=====\n", paths->pathPredicao);
 
     free(amostras);
     free(paths->pathTreino);

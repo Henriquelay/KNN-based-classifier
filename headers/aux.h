@@ -5,7 +5,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../headers/knn.h"
+#include "../headers/filemanager.h"
 
+void printarStatus(int*, Tamostra*);
 void output(char**, int*, float*, float**, int***, char**, float*, int*);
 float geraConfusao(int***, Data*, float**, float*);
 int contaDigito(int);

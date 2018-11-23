@@ -13,6 +13,17 @@
 #include <unistd.h>
 #endif
 
+//printa o status da execução
+void printarStatus(int *c, Tamostra *amostras){
+        printf("-------CONFIGURAÇÃO Nº%d-------\n", *c+1);
+        printf("K = %d ; DIST = %c ;", amostras[*c].k, amostras[*c].tipoDistancia);
+        
+        if(amostras[*c].tipoDistancia == 'M')
+            printf(" COEF = %.1f ;", amostras[*c].coefMinkowski);
+        puts("");
+}
+
+
 //PRODUZ O ARQUIVO .txt DE SAÍDA
 void output(char **pathPredicao, int *c, float *acc, float **vetorClassificados, int ***matrizConfusa, char **jordana, float *maiorRotulo, int *nlinhas){
 
