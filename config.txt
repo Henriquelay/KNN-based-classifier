@@ -1,6 +1,6 @@
 data/vowels/dataset/vowels_treino.csv
 data/vowels/dataset/vowels_teste.csv
-data/vowels/predicoes/
+predicoes/
 11, C
 13, M, 0.5
 13, E
